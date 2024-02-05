@@ -6,6 +6,8 @@ import {
     updateProduct, 
     deleteProduct, 
 } from '../controllers/products.controller.js'
+import authenticateToken from '../middleware/authenticateToken.middleware.js';
+
 
 const apiProductsRouter = Router();
 
@@ -16,14 +18,14 @@ apiProductsRouter.get('/', getAllProducts);
 apiProductsRouter.get('/:productId', getProductById); 
 
 //Endpoint POST para APGREGAR PRODUCTO
-apiProductsRouter.post('/', addProduct ); 
+apiProductsRouter.post('/', authenticateToken, addProduct ); 
 // apiProductsRouter.post('/', validateProductData, addProduct ); 
 
 //Endpoint PUT para actualizar un producto por su ID
-apiProductsRouter.put('/:productId', updateProduct );
+apiProductsRouter.put('/:productId', authenticateToken, updateProduct );
 //apiProductsRouter.put('/:productId', validateUpdateProductData, updateProduct );
 
 //Endpoint DELETE para eliminar un producto por su ID
-apiProductsRouter.delete('/:productId', deleteProduct );
+apiProductsRouter.delete('/:productId', authenticateToken, deleteProduct );
 
 export default apiProductsRouter;

@@ -14,6 +14,8 @@ import { __dirname } from './utils.js';
 //routes
 import apiRouter from './routes/api.routes.js';
 //import viewsRouter from './routes/views.routes.js';
+
+//documentación
 import swaggerUi from 'swagger-ui-express'
 import {swaggerSetup} from './configs/configSwagger.js';
 

@@ -38,5 +38,6 @@ export default{
     mongo_session_secret: process.env.MONGO_SESSION_SECRET,
     baseURL: process.env.BASE_URL, 
     cookie_secret : process.env.COOKIE_SECRET,
+    jwt_secret: process.env.JWT_SECRET,
     persistencia : program.opts().db,
 }

@@ -8,6 +8,7 @@ import {
     deleteUser, 
 } from '../controllers/users.controller.js'
 import { validateUserCreation, checkDuplicateEmail} from '../middleware/userValidation.middleware.js'
+import authenticateToken from '../middleware/authenticateToken.middleware.js';
 
 const apiUsersRouter = Router();
 
@@ -23,11 +24,11 @@ apiUsersRouter.get('/email/:userEmail', getUserByEmail);
 //Endpoint POST para APGREGAR UserO
 apiUsersRouter.post('/', validateUserCreation, checkDuplicateEmail, addUser ); 
 
-//Endpoint PUT para actualizar un Usero por su ID
-apiUsersRouter.put('/:userId', updateUser );
+//Endpoint PUT para actualizar un Usuario por su ID
+apiUsersRouter.put('/:userId', authenticateToken, updateUser );
 
 //Endpoint DELETE para eliminar un Usero por su ID
-apiUsersRouter.delete('/:userId', deleteUser );
+apiUsersRouter.delete('/:userId', authenticateToken, deleteUser );
 
 apiUsersRouter.get("/userTest", async (req, res) => {
     console.log(req)

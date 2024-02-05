@@ -1,6 +1,6 @@
 #path son los distintos endpoins que podemos tener
 path:
-  /api/products/: 
+  - /api/products/: 
     get:
       summary: get All products
       tags:
@@ -12,30 +12,30 @@ path:
             success: true
             message: Productos encontrados
             products: 
-              _id: 65bff812923ef26fe65e909c
-                title: Producto01
-                code: codigo01
-                price: 50
-                status: true
-                stock: 508
-                category: Pruebas
+              - _id: 65bff812923ef26fe65e909c
+              title: Producto01
+              code: codigo01
+              price: 50
+              status: true
+              stock: 508
+              category: Pruebas
                 
-              _id: 65bffa46625ad2e202dab20d
-                title: Producto02
-                code: codigo02
-                price: 1080
-                status: true
-                stock: 106
-                category: Pruebas
+              - _id: 65bffa46625ad2e202dab20d
+              title: Producto02
+              code: codigo02
+              price: 1080
+              status: true
+              stock: 106
+              category: Pruebas
                 
 
-              _id: 65bffa73af73f700d6bd7861
-                title: Producto03
-                code: codigo032
-                price: 327
-                status: true
-                stock: 1598
-                category: Pruebas
+              - _id: 65bffa73af73f700d6bd7861
+              title: Producto03
+              code: codigo032
+              price: 327
+              status: true
+              stock: 1598
+              category: Pruebas
         '500':
           description: Server error
         '400':
@@ -75,7 +75,7 @@ path:
             success: false
             message: E11000 duplicate key error collection pfch47310.productos index code_1 dup key { code \repeatedCode\ }
 
-  /api/products/{productId}: 
+  - /api/products/{productId}: 
     get:
       summary: get product By Id
       parameters:

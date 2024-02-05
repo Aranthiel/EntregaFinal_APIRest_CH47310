@@ -89,7 +89,8 @@ async function verifyProducts(products) {
     return { invalidProducts, validProducts };
 } // funciona ok 5/12
 
-//funcion intermedia entre router y manager metodo POST para APGREGAR carrito
+//funcion intermedia entre router y manager metodo POST para Crear un carrito, necesita un id de usuario y tener productos agregados
+//sirve para cuando el usuario no registrado agrega productos a un carrito???... no no sirve para esto :/
 async function addCart(req, res) {
     myCustomLogger.test('Ejecutando addCart en carts.controller.js');
     const { userId } = req.params;
