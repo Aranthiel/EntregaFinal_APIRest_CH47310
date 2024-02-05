@@ -1,0 +1,108 @@
+#path son los distintos endpoins que podemos tener
+paths:
+  /api/products/: 
+    get:
+      summary: Get All products
+      tags:
+        - Products
+      responses:
+        '200':
+          description: all products found
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Product"
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+    post:
+      summary: add new product
+      tags:
+        - Products
+      responses:
+        '200':
+          description: new product added successfully
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Product"
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+  /api/products/{productId}: 
+    get:
+      summary: get product By Id
+      parameters:
+        - name: productId
+      tags:
+        - Products
+      responses:
+        '200':
+          description: product found by id
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Product"
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+    put:
+      summary: update product info 
+      parameters:
+        - name: productId
+      tags:
+        - Products
+      responses:
+        '200':
+          description: product updated
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Product"
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+    delete:
+      summary: delete product
+      parameters:
+        - name: productId
+      tags:
+        - Products
+      responses:
+        '200':
+          description: product deleted
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Product"
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+
+
+#components son los esquemas que podemos tener
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: number
+        category:  
+          type: string

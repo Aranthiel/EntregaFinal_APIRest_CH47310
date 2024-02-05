@@ -1,0 +1,138 @@
+#path son los distintos endpoins que podemos tener
+paths:
+  /api/users/: 
+    get:
+      summary: get All Users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: all users found
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+    post:
+      summary: add new User
+      tags:
+        - Users
+      responses:
+        '200':
+          description: new user added
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+        
+
+  /api/users/{userId}: 
+    get:
+      summary: get User By Id
+      parameters:
+        - name: userId
+      tags:
+        - Users
+      responses:
+        '200':
+          description: user found by id
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+          id: metodo get example id
+          first_name: metodo get exaplme firts_name
+          last_name: metodo get example last name
+          email: metodo get example email
+          password: metodo get example password
+          from_github: metodo get example forom github
+          cart: metodo get example cart
+    put:
+      summary: update User info 
+      parameters:
+        - name: userId
+      tags:
+        - Users
+      responses:
+        '200':
+          description: user updated
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+    delete:
+      summary: delete User
+      parameters:
+        - name: userId
+      tags:
+        - Users
+      responses:
+        '200':
+          description: user deleted
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+
+  /api/users/email/{userEmail}: 
+    get:
+      summary: get User By Email
+      parameters:
+        - name: userEmail
+      tags:
+        - Users
+      responses:
+        '200':
+          description: user found by email
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
+        '500':
+          description: Server error
+        '400':
+          description: Some data is missing
+        
+
+
+#components son los esquemas que podemos tener
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: 
+          type: number
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        from_github:
+          type: boolean
+        cart:
+          type: object
+      

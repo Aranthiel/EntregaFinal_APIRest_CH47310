@@ -28,6 +28,10 @@ paths:
       responses:
         '200':
           description: new cart added successfully
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
         '500':
           description: Server error
         '400':
@@ -46,6 +50,10 @@ paths:
       responses:
         '200':
           description: cart found by id
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"
         '500':
           description: Server error
         '400':
@@ -63,7 +71,11 @@ paths:
         example: 65c03001a8c55f8436973fed
       responses:
         '200':
-          description: cart updated         
+          description: cart updated  
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"       
         '500':
           description: Server error
         '400':
@@ -79,7 +91,11 @@ paths:
         example: 65c03001a8c55f8436973fed
       responses:
         '200':
-          description: cart deleted          
+          description: cart deleted    
+          content: 
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Cart"      
         '500':
           description: Server error
         '400':
