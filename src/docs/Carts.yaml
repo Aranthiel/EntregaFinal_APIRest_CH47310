@@ -1,0 +1,165 @@
+#path son los distintos endpoins que podemos tener
+path:
+  /api/carts/: 
+    get:
+      summary: get All carts
+      tags:
+        - carts
+      responses:
+        '200':
+          description: all carts found
+          example:
+            success: true
+            message: cartos encontrados
+            carts: 
+              _id: 65bff812923ef26fe65e909c
+                title: carto01
+                code: codigo01
+                price: 50
+                status: true
+                stock: 508
+                category: Pruebas
+                
+              _id: 65bffa46625ad2e202dab20d
+                title: carto02
+                code: codigo02
+                price: 1080
+                status: true
+                stock: 106
+                category: Pruebas
+                
+
+              _id: 65bffa73af73f700d6bd7861
+                title: carto03
+                code: codigo032
+                price: 327
+                status: true
+                stock: 1598
+                category: Pruebas
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+
+/api/carts/{userId}:
+  post:
+    summary: create new cart
+    parameters:
+        - name: userId
+    tags:
+        - carts
+    responses:
+        '200':
+          description: new cart added successfully
+          example:
+            success: true
+            message: new cart added successfully
+            cartoAgregado: 
+              title: carto01
+              code: codigo01
+              price: 50
+              status: true
+              stock: 508
+              category: Pruebas
+              _id: 65bff812923ef26fe65e909c
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+          example:
+            success: false
+            message: E11000 duplicate key error collection pfch47310.cartos index code_1 dup key { code \repeatedCode\ }
+
+  /api/carts/{cartId}: 
+    get:
+      summary: get cart By Id
+      parameters:
+        - name: cartId
+      tags:
+        - carts
+      responses:
+        '200':
+          description: cart found by id
+          example:
+            success: true
+            message: carto encontrado:
+            cartById:
+              _id: 65bffa73af73f700d6bd7861
+              title: carto03
+              code: codigo03
+              price: 327
+              status: true
+              stock: 1598
+              category: Pruebas
+
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+        example:
+
+    put:
+      summary: update cart info 
+      parameters:
+        - name: cartId
+      example:
+        body:
+          title: carto03 modificado con el metodo PUT
+          status: false
+          stock: 1598
+          category: Test
+      tags:
+        - carts
+      responses:
+        '200':
+          description: cart updated
+          example: 
+            success: true
+            message: carto actualizado
+            response: 
+              _id: 65bffa73af73f700d6bd7861
+              title: carto03 modificado con el metodo PUT
+              code: codigo03
+              price: 527
+              status: false
+              stock: 1598
+              category: Test
+
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+        example:
+
+    delete:
+      summary: delete cart
+      parameters:
+        - name: cartId
+      tags:
+        - carts
+      responses:
+        '200':
+          description: cart deleted
+          example:
+            success: true
+            message: carto eliminado con exito:
+            deletedcart: 
+              acknowledged: true
+              deletedCount: 1
+        '500':
+          description: Server error
+        '400':
+          description: some data is missing
+
+
+#components son los esquemas que podemos tener
+
+components:
+  schema:
+    cart:
+      carts:
+        type: array
+        cartoId:
+          type: objectId
+        quantity:
+          type: number
