@@ -1,138 +1,222 @@
-#path son los distintos endpoins que podemos tener
 paths:
-  /api/users/: 
+  /users:
     get:
-      summary: get All Users
+      summary: Obtener todos los usuarios
       tags:
         - Users
-      responses:
+      responses::
         '200':
-          description: all users found
-          content: 
+          description: Éxito al obtener los usuarios
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuarios encontrados con éxito
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '404':
+          description: No se encontraron usuarios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontraron usuarios
     post:
-      summary: add new User
+      summary: Agregar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       tags:
         - Users
-      responses:
+      responses::
         '200':
-          description: new user added
-          content: 
+          description: Éxito al agregar el usuario
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
-        
-
-  /api/users/{userId}: 
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuario agregado con éxito
+                  usuarioAgregado:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: No se pudo agregar el usuario solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se pudo agregar el usuario solicitado
+  /users/{userId}:
     get:
-      summary: get User By Id
+      summary: Obtener un usuario por su ID
       parameters:
-        - name: userId
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a obtener
       tags:
         - Users
-      responses:
+      responses::
         '200':
-          description: user found by id
-          content: 
+          description: Éxito al obtener el usuario
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
-          id: metodo get example id
-          first_name: metodo get exaplme firts_name
-          last_name: metodo get example last name
-          email: metodo get example email
-          password: metodo get example password
-          from_github: metodo get example forom github
-          cart: metodo get example cart
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuario encontrado con éxito
+                  userById:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: No se encontró el ID de usuario solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de usuario solicitado
     put:
-      summary: update User info 
+      summary: Actualizar un usuario por su ID
       parameters:
-        - name: userId
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       tags:
         - Users
-      responses:
+      responses::
         '200':
-          description: user updated
-          content: 
+          description: Éxito al actualizar el usuario
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuario actualizado con éxito
+                  response:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: No se encontró el ID de usuario solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de usuario solicitado
     delete:
-      summary: delete User
+      summary: Eliminar un usuario por su ID
       parameters:
-        - name: userId
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a eliminar
       tags:
         - Users
-      responses:
+      responses::
         '200':
-          description: user deleted
-          content: 
+          description: Éxito al eliminar el usuario
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
-
-  /api/users/email/{userEmail}: 
-    get:
-      summary: get User By Email
-      parameters:
-        - name: userEmail
-      tags:
-        - Users
-      responses:
-        '200':
-          description: user found by email
-          content: 
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuario eliminado con éxito
+                  deletedUser:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: No se encontró el ID de usuario solicitado
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
-        
-
-
-#components son los esquemas que podemos tener
-
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de usuario solicitado
 components:
   schemas:
     User:
       type: object
       properties:
-        id: 
-          type: number
-        first_name:
+        _id:
           type: string
-        last_name:
+          example: 65c700be81a85cabed0c1ee9
+        name:
           type: string
+          example: John Doe
         email:
           type: string
-        password:
-          type: string
-        from_github:
-          type: boolean
-        cart:
-          type: object
-      
+          example: johndoe@example.com
+       
+      required:
+        - _id
+        - name
+        - email

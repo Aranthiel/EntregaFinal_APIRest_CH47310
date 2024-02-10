@@ -1,0 +1,27 @@
+corregir archivos YAML para incorporar ejemplos de las responses de thunderclient y de los bodys
+hacer .yaml para las rutas auth
+crear pruebas unitarias para los endpoints
+
+implementar roles:
+- admin
+
+implementar socket.io
+
+implementar handlebars:
+- chat
+- Actualizacion de productos en tiempo real (solo admin)
+- vista login
+- vista registro
+- vista de productos
+- vista de carritos
+
+
+implementar mailing
+- confirmacion de compra
+- recuperar contraseña
+- cambiar contraseña
+
+
+implementar session, cookies
+
+

@@ -60,6 +60,7 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ userId: user._id, email: user.email }, config.jwt_secret, {
             expiresIn: '1h',
         });
+        console.log("token controller", token)
 
         // Devuelve el token y otros detalles del usuario si es necesario
         res.status(200).json({ success: true, token, userId: user._id });

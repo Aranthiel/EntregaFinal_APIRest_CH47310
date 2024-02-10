@@ -1,88 +1,144 @@
 #path son los distintos endpoins que podemos tener
 paths:
-  /api/products/: 
+  /api/products:
     get:
-      summary: Get All products
+      summary: Obtener todos los productos
       tags:
         - Products
       responses:
         '200':
-          description: all products found
-          content: 
+          description: Productos encontrados
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Product"
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        '404':
+          description: No se encontraron productos
         '500':
-          description: Server error
-        '400':
-          description: some data is missing
+          description: Error del servidor
+
     post:
-      summary: add new product
+      summary: Agregar un nuevo producto
       tags:
         - Products
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+        examples:
+          example1:
+            value:
+              title: "Nuevo Producto"
+              code: "codigo_nuevo"
+              price: 75
+              status: true
+              stock: 100
+              category: "Pruebas"
       responses:
         '200':
-          description: new product added successfully
-          content: 
+          description: Producto agregado exitosamente
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Product"
-        '500':
-          description: Server error
+              schema:
+                $ref: "#/components/schemas/Product"
         '400':
-          description: some data is missing
-  /api/products/{productId}: 
+          description: Solicitud incorrecta o datos faltantes
+        '500':
+          description: Error del servidor
+
+  /api/products/{productId}:
     get:
-      summary: get product By Id
-      parameters:
-        - name: productId
+      summary: Obtener un producto por su ID
       tags:
         - Products
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: ID del producto
       responses:
         '200':
-          description: product found by id
-          content: 
+          description: Producto encontrado
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Product"
+              schema:
+                $ref: "#/components/schemas/Product"
+        '404':
+          description: Producto no encontrado
         '500':
-          description: Server error
-        '400':
-          description: some data is missing
+          description: Error del servidor
+
     put:
-      summary: update product info 
-      parameters:
-        - name: productId
+      summary: Actualizar un producto por su ID
       tags:
         - Products
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
       responses:
         '200':
-          description: product updated
-          content: 
+          description: Producto actualizado exitosamente
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Product"
-        '500':
-          description: Server error
+              schema:
+                $ref: "#/components/schemas/Product"
         '400':
-          description: some data is missing
+          description: Solicitud incorrecta o datos faltantes
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error del servidor
+
     delete:
-      summary: delete product
-      parameters:
-        - name: productId
+      summary: Eliminar un producto por su ID
       tags:
         - Products
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: ID del producto
       responses:
         '200':
-          description: product deleted
-          content: 
+          description: Producto eliminado exitosamente
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Product"
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                success: true
+                message: "Producto eliminado con exito:"
+                deletedProduct: 
+                  acknowledged: true
+                  deletedCount: 1
+        '404':
+          description: Producto no encontrado
         '500':
-          description: Server error
-        '400':
-          description: some data is missing
+          description: Error del servidor
 
 
 #components son los esquemas que podemos tener
@@ -92,17 +148,31 @@ components:
     Product:
       type: object
       properties:
-        id:
+        _id:
           type: string
+          description: ID único del producto
         title:
           type: string
+          description: Título del producto
         code:
           type: string
+          description: Código del producto
         price:
           type: number
+          description: Precio del producto
         status:
           type: boolean
+          description: Estado del producto
         stock:
-          type: number
-        category:  
+          type: integer
+          description: Cantidad en stock del producto
+        category:
           type: string
+          description: Categoría del producto
+
+# Esquemas de autenticación
+securitySchemes:
+  BearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT

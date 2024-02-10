@@ -1,106 +1,236 @@
 #path son los distintos endpoins que podemos tener
 paths:
-  /api/carts/:
+  /carts:
     get:
-      summary: Get All carts
+      summary: Obtener todos los carritos
       tags:
         - Carts
-      responses:
-        "200":
-          description: All carts found
-          content: 
+      responses::
+        '200':
+          description: Éxito al obtener los carritos
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: Some data is missing
-      
-  /api/carts/{userId}:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Carritos encontrados con éxito
+                  carts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cart'
+        '404':
+          description: No se encontraron carritos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontraron carritos
     post:
-      summary: Create new cart
+      summary: Crear un nuevo carrito
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: ID del usuario al que se asociará el carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: string
+              required:
+                - products
       tags:
         - Carts
-      parameters:
-      - name: userId
-        example: 65c02943a391fcd1174ca767
-      responses:
+      responses::
         '200':
-          description: new cart added successfully
-          content: 
+          description: Éxito al crear el carrito
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: some data is missing
-      
-      # Otros campos...
-      
-  /api/carts/{cartId}:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Carrito creado exitosamente
+                  carritoCreado:
+                    $ref: '#/components/schemas/Cart'
+        '404':
+          description: No se pudo agregar el carrito solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se pudo agregar el carrito solicitado
+  /carts/{cartId}:
     get:
-      summary: Get cart By Id
+      summary: Obtener un carrito por su ID
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+          description: ID del carrito a obtener
       tags:
         - Carts
-      parameters:
-      - name: cartId
-        example: 65c03001a8c55f8436973fed
-      responses:
+      responses::
         '200':
-          description: cart found by id
-          content: 
+          description: Éxito al obtener el carrito
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"
-        '500':
-          description: Server error
-        '400':
-          description: some data is missing
-        example:
-      # Otros campos...
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Carrito encontrado con éxito
+                  cartById:
+                    $ref: '#/components/schemas/Cart'
+        '404':
+          description: No se encontró el ID de carrito solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de carrito solicitado
     put:
-      summary: update cart info
+      summary: Actualizar un carrito por su ID
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+          description: ID del carrito a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: string
+              required:
+                - products
       tags:
         - Carts
-      parameters:
-      - name: cartId
-        in: path
-        description: Cart identifier
-        example: 65c03001a8c55f8436973fed
-      responses:
+      responses::
         '200':
-          description: cart updated  
-          content: 
+          description: Éxito al actualizar el carrito
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"       
-        '500':
-          description: Server error
-        '400':
-          description: some data is missing
-        example:
-      # Otros campos...
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Carrito actualizado con éxito
+                  response:
+                    $ref: '#/components/schemas/Cart'
+        '404':
+          description: No se encontró el ID de carrito solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de carrito solicitado
     delete:
-      summary: delete cart
+      summary: Eliminar un carrito por su ID
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+          description: ID del carrito a eliminar
       tags:
         - Carts
-      parameters:
-      - name: cartId
-        example: 65c03001a8c55f8436973fed
-      responses:
+      responses::
         '200':
-          description: cart deleted    
-          content: 
+          description: Éxito al eliminar el carrito
+          content:
             application/json:
-              schemas:
-                $ref: "#components/schemas/Cart"      
-        '500':
-          description: Server error
-        '400':
-          description: some data is missing
-      # Otros campos...
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Carrito eliminado con éxito
+                  deletedCart:
+                    $ref: '#/components/schemas/Cart'
+        '404':
+          description: No se encontró el ID de carrito solicitado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el ID de carrito solicitado
+
+
 
 #components son los esquemas que podemos tener
 
@@ -108,13 +238,18 @@ components:
   schemas:
     Cart:
       type: object
-      properties: 
-        id:
+      properties:
+        _id:
           type: string
+          example: 65c700be81a85cabed0c1ee9
         products:
           type: array
-          properties:
-            productoId:
-              type: object
-            quantity:
-              type: number
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                example: 5fb5e23f18e8d842e8b20b10
+      required:
+        - _id
+        - products
