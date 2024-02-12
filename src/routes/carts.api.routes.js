@@ -1,22 +1,20 @@
 import {Router} from 'express';
-import {
-    getAllCarts,
+import { getAllCarts,
     getCartById,
-    addCart,
+    addProductToCart,
     updateCart, 
-    deleteCart, 
-} from '../controllers/carts.controller.js'
+    deleteCart } from '../controllers/carts.controller.js';
+
+
 
 const apiCartsRouter = Router();
 
 //endpopint GET para obtener TODOS LOS Caritos
 apiCartsRouter.get('/', getAllCarts); 
 
-//endpopint para agregar productos a un carrito "temporal" cuando un usuario no esta registrado
-apiCartsRouter.get('/', getAllCarts); 
-
 //Endpoint POST para CREAR Carito
-apiCartsRouter.post('/:userId', addCart ); 
+//apiCartsRouter.post('/:userId', addCart ); 
+apiCartsRouter.post('/addproduct/:userId', addProductToCart); 
 
 //endpopint GET para obtener un Carito POR SU ID
 apiCartsRouter.get('/:cartId', getCartById); 

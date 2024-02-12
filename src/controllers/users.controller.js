@@ -62,8 +62,9 @@ async function getUserByEmail (req, res){
 
 //funcion intermedia entre router y manager metodo POST para APGREGAR usuario
 async function addUser (req, res){
-    myCustomLogger.test('ejecutando addUser en users.controller.js')   
-    const userInfo= req.body    
+    console.log('ejecutando addUser en users.controller.js')   
+    const userInfo= req.body 
+    console.log(userInfo)   
     const emptyCartId= await newEmptyCart();    
     const nuevoUsuario = {
         ...userInfo,  // Spread properties of userInfo

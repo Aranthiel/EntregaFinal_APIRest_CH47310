@@ -29,34 +29,44 @@ class CartsService {
 
     async createCart(products){
         myCustomLogger.test('ejecutando createCart en carts.service.js');
+        console.log('products en create cart', products)
         const cartProducts = {
             products: products.map(product => ({
-                productoId: product.productoId,
+                productoId: product.productId,
                 quantity: product.quantity
             }))
         }; 
+        console.log('cartProducts en createCart service', cartProducts)
         try {
-            myCustomLogger.test('llamando al mentodo cartsPersistence.createOne(cartProducts)');
+            // Crear el carrito con los productos actualizados
             const response = await cartsPersistence.createOne(cartProducts);
-            myCustomLogger.test('Carrito creado con éxito:', response);
-            return response;
+            // Devolver el carrito con los productos 
+            return {response, message: 'Carrito creado con éxito'  };
         } catch (error) {
             console.error('Error al crear el carrito:', error);
             return error;
         }
     };
 
-    async updateCart(cartId, updateCartProducts) {
+    async updateCart(cartId, products) {
         myCustomLogger.test('ejecutando updateCart en carts.service.js');
+        console.log('products en updateCart', products)
+        const cartProducts = {
+            products: products.map(product => ({
+                productoId: product.productId,
+                quantity: product.quantity
+            }))
+        }; 
+        console.log('cartProducts en updateCart service', cartProducts)
         try {
             // Actualizar el carrito con los productos actualizados
-            const response = await cartsPersistence.updateOne(cartId, { products: updateCartProducts });
+            const response = await cartsPersistence.updateOne(cartId, cartProducts);
     
-            // Devolver los productos actualizados
+            // Devolver el carrito con los productos actualizados
             return {response, message: 'Carrito actualizado con éxito'  };
         } catch (error) {
             console.error('Error al actualizar el carrito:', error);
-            throw new Error(`Error al actualizar el carrito: ${error.message}`);
+            return error;
         }
     }
     

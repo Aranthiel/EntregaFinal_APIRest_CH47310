@@ -53,6 +53,22 @@ describe('Pruebas con autenticación para usuarios', () => {
             expect(response.body.message).to.equal('Usuario actualizado con éxito:');
         });
 
+        it('Debería dar error al actualizar un usuario si se encuentra por su ID y el token es invalido', async () => {
+            const updatedUserInfo = {
+                first_name: 'Updated John',
+                last_name: 'Updated Doe',
+                email: 'updated@example.com',
+                password: 'updatedpassword',
+            };
+            const response = await request(app)
+                .put(`/api/users/${createdUserId}`)
+                .set('Authorization', `Bearer ${authToken}`)
+                .send(updatedUserInfo);
+                expect(response.status).to.equal(403);
+                expect(response.body.success).to.be.false; 
+                expect(response.body.message).to.equal('Token inválido'); 
+        });
+
         it('No debería permitir modificar el ID del usuario aunque el token es valido', async () => {
             const updatedUserInfo = {
                 id: 'newId123', // Intentar modificar el ID

@@ -1,12 +1,13 @@
 // src/controllers/auth.controller.js
 import { userModel } from '../models/users.models.js';
+import { addUser } from './users.controller.js';
 import {usersPersistence} from '../configs/persistenceManager.js';
 import { compareData, hashData } from '../utils.js';
 import jwt from 'jsonwebtoken';
 //variables de entorno
 import config from '../configs/config.js'
 
-export const registerUser = async (req, res) => {
+/* export const registerUser = async (req, res) => {
     try {
         const { first_name, last_name, email, password } = req.body;
 
@@ -36,7 +37,36 @@ export const registerUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
+}; */
+
+export const registerUser = async (req, res) => {
+    try {
+        const { first_name, last_name, email, password } = req.body;
+
+        // Verifica si el correo electrónico ya está registrado
+        const existingUser = await usersPersistence.findByEmail(email);
+
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'El correo electrónico ya está registrado' });
+        }
+
+        // Hashea la contraseña antes de almacenarla en la base de datos
+        const hashedPassword = await hashData(password);
+
+        // Agrega los datos del usuario al cuerpo de la solicitud
+        req.body = {
+            ...req.body,
+            password: hashedPassword,
+        };
+
+        // Llama al método addUser pasando req y res
+        console.log(' registro deriva a addUser')
+        await addUser(req, res);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
+
 
 export const loginUser = async (req, res) => {
     try {

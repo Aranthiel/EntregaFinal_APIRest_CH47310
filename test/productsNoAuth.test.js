@@ -14,26 +14,6 @@ describe('GET /api/products', () => {
     });
 });
 
-describe('POST /api/products', () => {
-    it('Debería dar un error si el token es invalido al tratar de agregar un producto', async () => {
-        const randomNumber = Math.floor(Math.random() * 10000);
-        const response = await request(app)
-            .post('/api/products')
-            .set('Authorization', `Bearer tokeninvalido`) 
-            .send({
-                title: "title",   
-                code: `codigo${randomNumber}`, 
-                price: 1235694,   
-                status: false, 
-                stock: 3,   
-                category: "category", 
-            });
-        expect(response.status).to.equal(403);
-        expect(response.body.success).to.be.false; 
-        expect(response.body.message).to.equal('Token inválido'); 
-    });
-});
-
 describe('GET /api/products/:productId', () => {
     it('Debería devolver un producto si se encuentra por su ID', async () => {
         const productId = '65bff812923ef26fe65e909c'; 

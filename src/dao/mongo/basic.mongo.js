@@ -13,10 +13,12 @@ export class BasicMongo {
     };
 
     async createOne(obj) {
+        console.log('obj en create one', obj)
         return this.model.create(obj);
     };
 
     async updateOne(id, obj) {
+        console.log('obj en update one', obj)
         return this.model.updateOne({_id:id}, obj);
     };
 

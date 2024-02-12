@@ -4,7 +4,7 @@ import { hashData }from '../utils.js';
 
 class UsersService{
     async getAllUsers(){
-        console.log('ejecutando getAllUsers en users.service.js');
+        //console.log('ejecutando getAllUsers en users.service.js');
         try {
             const response = await usersPersistence.findAll()
             return response;
@@ -15,7 +15,7 @@ class UsersService{
     };
 
     async getUserById(id){        
-        console.log('ejecutando getUserById en users.service.js');
+        //console.log('ejecutando getUserById en users.service.js');
         try {
             const response = await usersPersistence.findById(id)
             return response
@@ -26,8 +26,8 @@ class UsersService{
     };
 
     async getUserByEmail(email){
-        console.log('email: ', email)
-        console.log('ejecutando getUserByEmail en users.service.js');
+        //console.log('email: ', email)
+        //console.log('ejecutando getUserByEmail en users.service.js');
         try {
             const response = await usersPersistence.findByEmail( email );
             
@@ -39,7 +39,7 @@ class UsersService{
     }
     
     async createUser(obj) {
-        console.log('ejecutando createUser en users.service.js');
+        //console.log('ejecutando createUser en users.service.js');
         const {password} = obj; 
         try {
             const hashedPassword= await hashData(password);
@@ -53,7 +53,7 @@ class UsersService{
     }
 
     async updateUser(id, obj) {
-        console.log('ejecutando updateUser en users.service.js');
+        //console.log('ejecutando updateUser en users.service.js');
         try {
             const response = await usersPersistence.updateOne(id, obj);
             console.log('Usuario actualizado con éxito:', response);
@@ -65,7 +65,7 @@ class UsersService{
     }
 
     async deleteUser(id) {
-        console.log('ejecutando deleteUser en users.service.js');
+        //console.log('ejecutando deleteUser en users.service.js');
         try {
             const response = await usersPersistence.deleteOne(id);
             console.log('Usuario actualizado con éxito:', response);

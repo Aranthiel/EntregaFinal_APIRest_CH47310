@@ -20,7 +20,7 @@ describe('Pruebas del middleware authenticateToken', () => {
     it('Debería devolver un error 403 si se proporciona un token inválido', async () => {
         const response = await request(app)
             .put('/api/users/65c7e435290cd2af568e1221')
-            .set('Authorization', `tokeninvalido`)
+            .set('Authorization', `Bearer tokeninvalido`)
             .send({
                 first_name: "Jonathan",
                 last_name: "Joestar"

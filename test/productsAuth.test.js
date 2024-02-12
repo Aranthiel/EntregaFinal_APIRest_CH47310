@@ -79,6 +79,24 @@ describe('Pruebas con autenticación', () => {
             expect(response.body.success).to.be.true;
             expect(response.body.message).to.equal('new product added successfully');
         });
+
+        it('Debería dar un error si el token es invalido al tratar de agregar un producto', async () => {
+            const randomNumber = Math.floor(Math.random() * 10000);
+            const response = await request(app)
+                .post('/api/products')
+                .set('Authorization', `Bearer ${authToken}`) 
+                .send({
+                    title: "title",   
+                    code: `codigo${randomNumber}`, 
+                    price: 1235694,   
+                    status: false, 
+                    stock: 3,   
+                    category: "category", 
+                });
+            expect(response.status).to.equal(403);
+            expect(response.body.success).to.be.false; 
+            expect(response.body.message).to.equal('Token inválido'); 
+        });
     });
 
     describe('PUT /api/products/:productId', () => {

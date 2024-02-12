@@ -1,86 +1,54 @@
 #path son los distintos endpoins que podemos tener
 paths:
-  /carts:
+  /api/carts:
     get:
       summary: Obtener todos los carritos
       tags:
         - Carts
-      responses::
+      description: Obtiene todos los carritos existentes.
+      responses:
         '200':
-          description: Éxito al obtener los carritos
+          description: Lista de carritos obtenida con éxito
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Carritos encontrados con éxito
-                  carts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Cart'
-        '404':
-          description: No se encontraron carritos
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: No se encontraron carritos
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor
+
+  /api/carts/addproduct/{userId}:
     post:
-      summary: Crear un nuevo carrito
+      summary: Agregar productos al carrito
+      tags:
+        - Carts
+      description: 
+        Agrega productos al carrito de un usuario autenticado o crea un carrito temporal si no se proporciona un usuario.
       parameters:
         - in: path
           name: userId
           required: true
           schema:
             type: string
-          description: ID del usuario al que se asociará el carrito
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                products:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      productId:
-                        type: string
-              required:
-                - products
-      tags:
-        - Carts
-      responses::
+            example: nouser o Id del usuario
+        - in: body
+          name: products
+          description: Lista de productos a agregar al carrito
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Product'
+      responses:
         '200':
-          description: Éxito al crear el carrito
+          description: Productos agregados al carrito con éxito
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Carrito creado exitosamente
-                  carritoCreado:
-                    $ref: '#/components/schemas/Cart'
+                $ref: '#/components/schemas/Cart'
         '404':
-          description: No se pudo agregar el carrito solicitado
+          description: Error al intentar crear el carrito solicitado
           content:
             application/json:
               schema:
@@ -92,144 +60,96 @@ paths:
                   message:
                     type: string
                     example: No se pudo agregar el carrito solicitado
-  /carts/{cartId}:
-    get:
-      summary: Obtener un carrito por su ID
-      parameters:
-        - in: path
-          name: cartId
-          required: true
-          schema:
-            type: string
-          description: ID del carrito a obtener
-      tags:
-        - Carts
-      responses::
-        '200':
-          description: Éxito al obtener el carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Carrito encontrado con éxito
-                  cartById:
-                    $ref: '#/components/schemas/Cart'
-        '404':
-          description: No se encontró el ID de carrito solicitado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: No se encontró el ID de carrito solicitado
-    put:
-      summary: Actualizar un carrito por su ID
-      parameters:
-        - in: path
-          name: cartId
-          required: true
-          schema:
-            type: string
-          description: ID del carrito a actualizar
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                products:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      productId:
-                        type: string
-              required:
-                - products
-      tags:
-        - Carts
-      responses::
-        '200':
-          description: Éxito al actualizar el carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Carrito actualizado con éxito
-                  response:
-                    $ref: '#/components/schemas/Cart'
-        '404':
-          description: No se encontró el ID de carrito solicitado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: No se encontró el ID de carrito solicitado
-    delete:
-      summary: Eliminar un carrito por su ID
-      parameters:
-        - in: path
-          name: cartId
-          required: true
-          schema:
-            type: string
-          description: ID del carrito a eliminar
-      tags:
-        - Carts
-      responses::
-        '200':
-          description: Éxito al eliminar el carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Carrito eliminado con éxito
-                  deletedCart:
-                    $ref: '#/components/schemas/Cart'
-        '404':
-          description: No se encontró el ID de carrito solicitado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: No se encontró el ID de carrito solicitado
+        '500':
+          description: Error interno del servidor
 
+  /api/carts/{cartId}:
+    get:
+      summary: Obtener carrito por ID
+      tags:
+        - Carts
+      description: Obtiene el carrito por su ID.
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+            description: El ID del carrito
+      responses:
+        '200':
+          description: Carrito encontrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: Error al buscar un carrito por su ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No se encontró el Id de carrito solicitado
+        '500':
+          description: Error interno del servidor
+
+    put:
+      summary: Actualizar carrito por ID
+      tags:
+        - Carts
+      description: Actualiza el carrito por su ID.
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+            description: El ID del carrito
+        - in: body
+          name: products
+          description: Lista de productos actualizados en el carrito
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Carrito actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor
+
+    delete:
+      summary: Eliminar carrito por ID
+      tags:
+        - Carts
+      description: Elimina el carrito por su ID.
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: string
+            description: El ID del carrito
+      responses:
+        '200':
+          description: Carrito eliminado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '500':
+          description: Error interno del servidor
 
 
 #components son los esquemas que podemos tener

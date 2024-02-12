@@ -32,12 +32,21 @@ paths:
               email: correo@example.com
               password: contraseña
       responses:
-        '201':
-          description: User successfully registered
+        '200':
+          description: Éxito al agregar el usuario
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Usuario agregado con éxito
+                  usuarioAgregado:
+                    $ref: '#/components/schemas/User'
         '400':
           description: Bad request, missing required fields or invalid data
           content:
