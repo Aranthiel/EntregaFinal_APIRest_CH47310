@@ -13,12 +13,15 @@ import { __dirname } from './utils.js';
 
 //routes
 import apiRouter from './routes/api.routes.js';
-//import viewsRouter from './routes/views.routes.js';
+import viewsRouter from './routes/views.routes.js';
 
 //documentación
 import swaggerUi from 'swagger-ui-express'
 import {swaggerSetup} from './configs/configSwagger.js';
 
+//handlebars'
+import { engine } from "express-handlebars";
+import path from 'path';
 
 ////////////////////////  mi app //////////////////////////////////////
 const app = express();
@@ -26,26 +29,21 @@ const PORT=config.env_port;
 const cookieSecret=config.cookie_secret;
 const BASE_URL=config.baseURL
 
-
-//1) cargar archivos de rutas
-
-
-
-
-
-
-// 2) Middleware para que Express pueda analizar el cuerpo de las solicitudes
+// Middleware para que Express pueda analizar el cuerpo de las solicitudes
 //IMPORTANTE siempre tiene que estar definido ANTES DE LAS RUTAS
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname+'/public'));
 
-// 3) configurar CORS
+//handlebars
+app.engine("handlebars", engine());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "handlebars");
 
 
-// 4) acceder a la configuración de rutas
+// RUTAS
 app.use("/api", apiRouter);
-//app.use("/", viewsRouter);
+app.use("/", viewsRouter);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup)); // si pongo /api/docs me da un error
 
 // PENULTIMO: Inicia el servidor

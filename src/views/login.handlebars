@@ -1,0 +1,45 @@
+<form id="loginForm" action="/api/auth/login" method="post">
+    email: <input type="email" name="email" id="email">
+    password: <input type="password" name="password" id="password">
+    <input type="submit" value="Local Loguin"> <!-- Botón para enviar el formulario normalmente -->
+
+    <button onclick="sendToPassportLocal()">Passport Local</button> <!-- Botón para Passport Local -->
+    <button onclick="location.href='/api/auth/githubAuth'">GitHub</button> <!-- Botón para GitHub -->
+</form>
+
+<p>Si aun no lo hiciste, <a href="/signup">Registrate acá</a></p>
+
+<script>
+    function sendToPassportLocal() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        alert('La función sendToPassportLocal se está ejecutando y hará un fetch a /api/auth/passportlogin');
+
+        // Construir el objeto con los datos del formulario
+        var formData = {
+            email: email,
+            password: password
+        };
+
+        // Enviar los datos al endpoint de Passport Local utilizando Fetch API con método POST
+        fetch('/api/auth/passportlogin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            // Manejar la respuesta del servidor aquí
+            if (response.ok) {
+                console.log('PASSPORT LOCAL LOGIN OK');
+            } else {
+                // Manejar errores de autenticación u otras respuestas no exitosas
+                console.error('Error en la autenticación');
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+    }
+</script>

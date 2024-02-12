@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="css/style.css"><title>WebSocket</title>
+</head>
+<body>
+    <header>
+        <navbar id="menu"> 
+            <div id="logo">
+                <a href="{{baseURL}}/home"><img src="./assets/logoipsum-284.svg" alt="Logo PLaceHolder"></a>
+            </div>
+            <nav class="dropdownmenu">
+                <ul>
+                    <li class="menuLi"><a href="{{baseURL}}/home"> Home</a></li>                    
+                    <li class="menuLi"><a href="{{baseURL}}/chat"> Chat</a></li>                    
+                    <li class="menuLi"><a href="{{baseURL}}/docs"> Docs</a></li>
+                    <li class="menuLi"><a href="{{baseURL}}/realtimeproducts"> RT Products</a></li>
+                    <li class="menuLi"><a href="#"> API</a>
+                        <ul id="submenu">
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/products">Products</a></li>
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/products/65bffafeaf73f700d6bd7869">Product example</a></li>
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/users">Users</a></li>
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/users/65c027f595e6399914f679f9">User example</a></li>
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/carts">Carts</a></li>
+                            <li class="dopdownItem"><a href="{{baseURL}}/api/carts/65c027f595e6399914f679f7">Cart example</a></li>
+                        </ul>
+                    </li>
+                    <li class="menuLi"><a href="{{baseURL}}/signup"> Registrate</a></li>
+                    <li class="menuLi"><a href="{{baseURL}}/login"> Ingresar</a></li>
+                    <li class="menuLi"><a href="{{baseURL}}/cart/{{cart}}"> Mi Carrito</a></li>
+                </ul>
+            </nav>
+            <div id="cart">
+                <a href="{{baseURL}}/cart/{{cart}}">
+                    <img src=".\assets\basket-fill.svg" alt="carrito placeholder">
+                    <span id="cartItemsCount"></span>
+                </a>
+            </div>
+            <div id="profile">
+                <img src=".\assets\person-fill.svg" alt="profile placeholder">
+            </div>
+        </navbar>
+    </header>
+    <h1> </h1>
+    {{{body}}}
+</body>
+</html>

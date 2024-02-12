@@ -1,0 +1,25 @@
+
+<h3>Welcome {{first_name}}, your email is: {{email}}</h3>
+
+<h3>Productos que no se actualizan en tiempo real:</h3>
+<ul id="productList"></ul>
+<script>
+    window.addEventListener('load', function() {
+        console.log('home.handlebars activada');
+        const productList = document.getElementById("productList");
+        fetch('/api/products') // Hacer una solicitud HTTP al servidor para obtener los productos iniciales
+        .then(response => response.json())
+        .then(data => {
+            //console.log('Productos obtenidos del servidor:', data.products); // Agregar el console.log
+            // Renderizar los productos en la página
+            data.products.forEach(product => {
+            const li = document.createElement("li");
+            li.textContent = `Título: ${product.title}, Precio: ${product.price}`;
+            productList.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener productos:', error);
+        });
+    });
+</script>

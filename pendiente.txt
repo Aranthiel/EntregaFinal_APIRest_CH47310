@@ -1,6 +1,6 @@
 LISTO: corregir archivos YAML para incorporar ejemplos de las responses de thunderclient y de los bodys
 LISTO: hacer .yaml para las rutas auth
-crear pruebas unitarias para los endpoints
+LISTO crear pruebas unitarias para los endpoints
 
 implementar roles:
 - admin
@@ -28,22 +28,22 @@ implementar session, cookies
 /////////////////////////////
 Para enfocarte en el backend, primero deberías asegurarte de tener las siguientes funcionalidades básicas implementadas:
 
-Manejo de Usuarios:
+Manejo de Usuarios:[LISTO]
 Implementa las rutas y controladores necesarios para el registro de usuarios.
 Asegúrate de tener validaciones adecuadas para los datos del usuario, como el nombre, correo electrónico y contraseña.
 Crea la lógica para verificar si un usuario ya está registrado y evitar duplicados en la base de datos.
 
-Manejo de Sesiones y Autenticación:
+Manejo de Sesiones y Autenticación: [LISTO]
 Implementa un sistema de autenticación para que los usuarios puedan iniciar sesión.
 Utiliza técnicas como tokens JWT (JSON Web Tokens) para gestionar las sesiones de usuario de manera segura.
 Crea middleware de autenticación para proteger las rutas que requieren inicio de sesión.
 
-Manejo de Carritos:
+Manejo de Carritos: [LISTO]
 Implementa las rutas y controladores necesarios para la creación, actualización y eliminación de carritos.
 Asegúrate de asociar correctamente los carritos con los usuarios registrados una vez que hayan iniciado sesión.
 Define cómo manejar los carritos temporales de usuarios no registrados y cómo fusionarlos con los carritos de usuarios registrados.
 
-Gestión de Productos:
+Gestión de Productos: [LLISTO]
 Implementa las funcionalidades necesarias para agregar, actualizar, obtener y eliminar productos.
 Asegúrate de tener validaciones adecuadas para los datos de los productos, como el nombre, código, precio, etc.
 Considera la posibilidad de implementar búsquedas y filtros para ayudar a los usuarios a encontrar productos específicos.

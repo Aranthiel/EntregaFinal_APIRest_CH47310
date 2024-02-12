@@ -1,0 +1,90 @@
+
+<h1>SIGNUP</h1>
+User
+<form id="signupForm" >
+    FirstName: <input type="text" name="first_name" id="first_name">
+    LastName: <input type="text" name="last_name" id="last_name">
+    Email: <input type="email" name="email" id="email">
+    Password: <input type="password" name="password" id="password">
+    <button type="button" id="localSignup">Local Signup</button>
+    <button type="button" id="passportSignup">Passport Signup</button>
+    <button type="button" id="githubSignup">Github Signup</button>
+</form>
+<p>Si ya estás registrado, <a href="/">LOGUEATE</a></p>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const baseURL = "http://localhost:8080";
+        console.log('new FormData()');
+        
+        const localSignupBtn = document.getElementById('localSignup');
+        const passportSignupBtn = document.getElementById('passportSignup');
+        const githubSignupBtn = document.getElementById('githubSignup');
+
+        localSignupBtn.addEventListener('click', () => {
+            sendForm(`${baseURL}/api/auth/signup`);
+        });
+
+        passportSignupBtn.addEventListener('click', () => {
+            sendForm(`${baseURL}/api/auth/passportsignup`);
+        });
+
+        githubSignupBtn.addEventListener('click', (event) => {
+        // Detener el comportamiento predeterminado de enviar el formulario
+        event.preventDefault();
+        console.log('click en githubSignupBtn')
+
+        // Lógica para realizar la solicitud GET a /api/auth/githubauth
+        fetch(`${baseURL}/api/auth/githubauth`)
+            .then(response => {
+                // Manejar la respuesta del servidor aquí
+                console.log('Respuesta recibida:', response);
+
+                if (response.redirected) {
+                    console.log('response.redirected')
+                    // Redirigir al usuario si la respuesta indica una redirección
+                    window.location.href = response.url;
+                }
+            })
+            .catch(error => {
+                // Manejar cualquier error
+                console.error('Error al enviar la petición:', error);
+            });
+    });
+
+        function sendForm(url) {
+            
+            const first_name = document.getElementById('first_name').value;
+            const last_name = document.getElementById('last_name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('solicitud Fetch a', url)
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    password: password,
+                })
+            })
+                .then(response => {
+                    // Manejar la respuesta del servidor aquí
+                    console.log('Respuesta recibida:', response);
+                    if (response.redirected) {
+                        console.log('response.redirected')
+                        // Redirigir al usuario si la respuesta indica una redirección
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => {
+                    // Manejar cualquier error
+                    console.error('Error al enviar la petición:', error);
+                });
+        }
+
+    });
+</script>

@@ -1,0 +1,251 @@
+/*menu*/
+
+#menu {    
+    background-color: rgb(116, 193, 196); 
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+div#logo{
+    width: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#logo a{
+    width: 100%;
+    padding: 0;
+}
+#logo img {
+    width: 100%;
+    padding: 15px;
+}
+/* dropdown */
+.dropdownmenu ul, .dropdownmenu li{
+margin:auto;
+padding: 0;
+display: flex;
+justify-content: center;
+}
+
+.dropdownmenu ul{
+    list-style: none;
+    width: 100%;
+}
+
+.dropdownmenu li{
+    float: left;
+    position: relative;
+    width:140px;
+    }
+
+.dropdownmenu a{
+    width: 100%;
+    background-color: rgb(116, 193, 196);
+    text-decoration: none;
+    color:black;
+    text-transform: uppercase;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.25s ease;
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -ms-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+}
+.dropdownmenu li:hover a{
+    background-color:#69888a ;
+}
+
+#submenu {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 35px;
+    visibility: hidden;
+    z-index: 1;
+}
+
+li:hover ul#submenu{
+    opacity: 1;
+    top:50px;
+    visibility: visible;
+}
+
+#submenu li {
+    float:none;
+    width: 100%;
+}
+
+#submenu a:hover{
+    background-color:  rgb(116, 193, 196);
+}
+
+div#cart, div#profile{
+    display: flex;
+    width: 5rem;
+    height: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+div#cart img, div#profile img{
+    width: 1.75rem;
+}
+
+/*carritos.handlebars*/
+#carritos{
+    background-color: #ccc;
+
+}
+/*chat.handlebars*/
+
+/*home.handlebars*/
+
+/*products.handlebars*/
+#showProducts{
+    background-color: rgb(209, 161, 185);
+    
+    
+}
+#productCards{
+    background-color: rgb(129, 186, 194);    
+    display: flex;
+    flex-wrap: wrap;    
+    justify-content: space-evenly;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.card.col-md-4.mb-4{
+    background-color: rgb(217, 228, 156);
+    border: 1px solid rgb(96, 34, 138);
+    width: 15%;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    padding: 15px;
+    margin:1%;
+}
+
+#pagination{
+    display: flex;
+    justify-content: space-evenly;
+}
+/* #prevPage{}
+#currentPage{}
+#nextPage{} */
+
+
+/*realtimeproducts.handlebars*/
+#rtpcontainer{
+    border:1px solid red;
+    display: flex;
+}
+#rtpproductos{
+    border:4px solid rgb(40, 165, 29);
+    width: 50%;
+}
+#productForm{
+    border:1px solid red;
+}
+#rtpshowProducts{
+    border:1px solid red;
+}
+#rtpcarritos{
+    border:4px solid rgb(196, 87, 14);
+    width: 50%;
+}
+#rtpRenderCarritos{
+    border:1px solid red;
+}
+#rtpButtonsCarrito{
+    border:1px solid red;
+}
+.flexContainer{
+    display: flex;    
+    justify-content: space-around;
+}
+#cartOptions{
+    background-color: pink;
+    width: 30%;
+}
+#cartOptions h2{
+    text-align: center;
+}
+#showCarts{
+    background-color: aquamarine;
+    /*display: flex;*/
+    width: 30%;
+}
+#showCarts h2{
+    text-align: center;
+}
+#showCartDetail{
+    background-color:burlywood;
+    /*display: flex;*/
+    width: 30%;
+}
+#showCartDetail h2{
+    text-align: center;
+}
+.productCardDiv{
+    background-color: purple;
+    margin: 1rem;
+    border-radius: 2rem;
+    border: 1px solid black;
+    padding:0 1.5rem;
+}
+.productCardDiv h3{
+    text-align: center;
+}
+
+#productList{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        flex-direction: row;
+}
+.product-card{    
+    max-width: 250px;
+    width: 250px;
+    height: 400px;
+    background-color: #69888a;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+.product-info{    
+    display: flex;
+    flex-direction: column;
+}
+.title-container{
+    /* background-color: green; */
+    height: 60px;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+}
+.description-container{
+    /* background-color: pink; */
+    height: 105px;
+}
+.actions-container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    /* height: 50px; */
+    /*background-color: blue;*/
+    
+}
