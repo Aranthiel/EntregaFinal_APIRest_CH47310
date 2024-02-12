@@ -55,3 +55,4 @@ const httpServer = app.listen(PORT, ()=>(
 
 // ULTIMO: inicia soket.io
 
+export default app;

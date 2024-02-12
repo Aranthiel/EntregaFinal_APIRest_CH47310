@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
 
         // Verifica si el correo electrónico ya está registrado
         const existingUser = await usersPersistence.findByEmail( email );
-        console.log('existingUser en loginUser de auth.controller.js:', existingUser);
+        
 
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'El correo electrónico ya está registrado' });
@@ -44,7 +44,7 @@ export const loginUser = async (req, res) => {
 
         // Busca al usuario por correo electrónico
         const user = await usersPersistence.findByEmail( email );
-        console.log('user en loginUser de auth.controller.js:', user);
+        
         
         if (!user) {
             return res.status(401).json({ success: false, message: 'Credenciales inválidas' });
@@ -60,7 +60,7 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ userId: user._id, email: user.email }, config.jwt_secret, {
             expiresIn: '1h',
         });
-        console.log("token controller", token)
+        //console.log("token controller", token)
 
         // Devuelve el token y otros detalles del usuario si es necesario
         res.status(200).json({ success: true, token, userId: user._id });

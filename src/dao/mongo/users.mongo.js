@@ -7,9 +7,9 @@ import { BasicMongo} from './basic.mongo.js';
     }
 
     async findByEmail( email ){
-        console.log('email: ', email)
+        //console.log('email: ', email)
         const userByEmail = await userModel.findOne({email});
-        console.log ('userByEmail en user.mongo.js', userByEmail)
+        //console.log ('userByEmail en user.mongo.js', userByEmail)
         return  userByEmail
     }
 }

@@ -12,6 +12,9 @@ const apiCartsRouter = Router();
 //endpopint GET para obtener TODOS LOS Caritos
 apiCartsRouter.get('/', getAllCarts); 
 
+//endpopint para agregar productos a un carrito "temporal" cuando un usuario no esta registrado
+apiCartsRouter.get('/', getAllCarts); 
+
 //Endpoint POST para CREAR Carito
 apiCartsRouter.post('/:userId', addCart ); 
 
