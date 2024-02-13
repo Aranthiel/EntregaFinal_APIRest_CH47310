@@ -1,9 +1,9 @@
 import { Server } from 'socket.io'; // Para gestionar las conexiones de WebSocket
 
 import { chatModel } from '../models/chats.model.js';
-import config from '../config/config.js';
+import config from '../configs/config.js';
 //winston 
-import {myCustomLogger} from '../config/configWinston.js'
+import {myCustomLogger} from '../configs/configWinston.js'
 
 
 const PORT = config.port || 8080; // Si no hay variable PORT definida, usa 8080 por defecto

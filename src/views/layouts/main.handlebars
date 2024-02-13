@@ -30,17 +30,18 @@
                     </li>
                     <li class="menuLi"><a href="{{baseURL}}/signup"> Registrate</a></li>
                     <li class="menuLi"><a href="{{baseURL}}/login"> Ingresar</a></li>
-                    <li class="menuLi"><a href="{{baseURL}}/cart/{{cart}}"> Mi Carrito</a></li>
                 </ul>
             </nav>
             <div id="cart">
                 <a href="{{baseURL}}/cart/{{cart}}">
-                    <img src=".\assets\basket-fill.svg" alt="carrito placeholder">
+                    <img src=".\assets\basket-fill.svg" alt="carrito">
                     <span id="cartItemsCount"></span>
                 </a>
             </div>
             <div id="profile">
-                <img src=".\assets\person-fill.svg" alt="profile placeholder">
+                <a href="{{baseURL}}/users/{{user}}">
+                <img src=".\assets\person-fill.svg" alt="profile">
+                </a>
             </div>
         </navbar>
     </header>

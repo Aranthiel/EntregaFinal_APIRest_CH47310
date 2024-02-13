@@ -1,4 +1,4 @@
-//conexion a la base de datos //mongoose
+//conexion a la base de datos mongoose
 import "./configs/dbconfig.js";
 
 //inicializar server express
@@ -22,6 +22,15 @@ import {swaggerSetup} from './configs/configSwagger.js';
 //handlebars'
 import { engine } from "express-handlebars";
 import path from 'path';
+
+//socket.io 
+import { initializeSocket } from "./socket/socketServer.js";
+
+//coockie parser
+//session
+//CORS
+//passport
+
 
 ////////////////////////  mi app //////////////////////////////////////
 const app = express();
@@ -51,6 +60,7 @@ const httpServer = app.listen(PORT, ()=>(
     myCustomLogger.info(`Pruebas server express. Servidor escuchando en http://localhost:${PORT}/home `)
 ));
 
-// ULTIMO: inicia soket.io
+//const socketServer = new Server(httpServer);
+initializeSocket(httpServer);
 
 export default app;
