@@ -86,18 +86,19 @@ User
                     console.log('Respuesta recibida:', response);
                     if (response.status === 200) {
                         response.json().then(data => {
-                            console.log('Usuario logueado:', data);
-                            // Almacenar el token y la información del usuario en una cookie
-                            document.cookie = `token=${data.token}`;
-                            document.cookie = `user=${JSON.stringify({
-                                first_name: data.first_name,
-                                last_name: data.last_name,
-                                email: data.email,
-                                from_github: data.from_github,
-                                cart: data.cart,
-                                _id: data._id,
-                                __v: data.__v
-                            })}`;
+                            // Almacenar el token en una cookie con una duración de 1 hora
+                            document.cookie = `token=${data.token}; expires=${new Date(Date.now() + 3600000).toUTCString()}; path=/`;
+                        
+                            // Almacenar la información del usuario en el localStorage
+                            localStorage.setItem('APIuser', JSON.stringify({
+                            first_name: data.user.first_name,
+                            last_name: data.user.last_name,
+                            email: data.user.email,
+                            from_github: data.user.from_github,
+                            cart: data.user.cart,
+                            _id: data.user._id
+                        }));
+                        
                             // Redirigir al usuario a la página de inicio
                             window.location.href = `${baseURL}/home`;
                         });

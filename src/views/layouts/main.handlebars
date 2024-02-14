@@ -33,13 +33,13 @@
                 </ul>
             </nav>
             <div id="cart">
-                <a href="{{baseURL}}/cart/{{cart}}">
+                <a id="cartLink" href="{{baseURL}}/api/cart/{{cart}}">
                     <img src=".\assets\basket-fill.svg" alt="carrito">
                     <span id="cartItemsCount"></span>
                 </a>
             </div>
             <div id="profile">
-                <a href="{{baseURL}}/users/{{user}}">
+                <a id="profileLink" href="{{baseURL}}/users/{{user}}">
                 <img src=".\assets\person-fill.svg" alt="profile">
                 </a>
             </div>
@@ -49,3 +49,28 @@
     {{{body}}}
 </body>
 </html>
+
+<script>
+    console.log('mainView is Alive!')
+    // Función para obtener los datos del usuario del Local Storage y mostrarlos en la página
+    function displayUserInfo() {
+        const userData = JSON.parse(localStorage.getItem('APIuser'));
+        if (userData) {
+            document.getElementById('cartLink').href = `{{baseURL}}/cart/${userData.cart}`;
+            document.getElementById('profileLink').href = `{{baseURL}}/users/${userData._id}`;
+            console.log('userData.cart', userData.cart)
+            console.log('userdata._id', userData._id)
+        }else {
+            const storedCart = JSON.parse(localStorage.getItem('cart'));
+            document.getElementById('cartLink').href = `{{baseURL}}/cart/${storedCart.cart}`;
+        }
+    } 
+    
+    window.addEventListener('load', async function() {
+    try {
+        displayUserInfo();        
+    } catch (error) {
+        console.error('Hubo un error:', error);
+    }
+});
+</script>

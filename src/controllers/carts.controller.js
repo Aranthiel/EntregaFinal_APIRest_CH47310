@@ -7,7 +7,7 @@ import { myCustomLogger} from '../configs/configWinston.js';
 
 
 async function verifyProducts(products) {
-    console.log("verifyProducts")
+    
     const invalidProducts = [];
     const validProducts = [];
     
@@ -27,25 +27,33 @@ async function verifyProducts(products) {
 }
 
 async function updateCartProducts(cartId, products){
-    //obtener los productos actuales del carrito por su id
-   
     try {
+        //busca el carrito guardado por el ID
         const carritoDB = await cartsService.getCartById(cartId);
-            
+
         // Crear un objeto que mapee cada producto por su ID
         const currentProductsMap = {};
+        console.log('carritoDB.products', carritoDB.products)
         carritoDB.products.forEach(product => {
-            if (product.productId) { // Verificar si el productId está definido
-                currentProductsMap[product.productId] = product.quantity;
+            if (product.productoId) { // Verificar si el productId está definido
+                currentProductsMap[product.productoId] = product.quantity;
             }
         });
+        console.log('currentProductsMap', currentProductsMap)
 
         // Iterar sobre los productos nuevos y actualizar el mapa de productos actuales
         products.forEach(product => {
             if (product.productId) { // Verificar si el productId está definido
-                currentProductsMap[product.productId] = product.quantity;
+                if (currentProductsMap[product.productId]) {
+                    // Si el producto ya está en el carrito, sumar las cantidades
+                    currentProductsMap[product.productId] += product.quantity;
+                } else {
+                    // Si el producto no está en el carrito, agregarlo al mapa
+                    currentProductsMap[product.productId] = product.quantity;
+                }
             }
         });
+        console.log('currentProductsMap', currentProductsMap);
         
 
         // Crear un nuevo array con los objetos de productos y cantidades actualizadas
@@ -53,7 +61,7 @@ async function updateCartProducts(cartId, products){
             productId,
             quantity: currentProductsMap[productId]
         }));
-        
+        console.log('updatedProducts', updatedProducts)
         
         const updatedCart = await cartsService.updateCart(cartId, updatedProducts);
         return updatedCart
@@ -108,7 +116,7 @@ async function addProductToCart(req, res) {
     
     //verifica que los productos existan
     const existingProducts = await verifyProducts(products);
-    console.log(existingProducts.validProducts)
+    
 
     try {
         if (userId !== "nouser") {
@@ -131,20 +139,25 @@ async function addProductToCart(req, res) {
             const carritoActualizado = await updateCartProducts(cartId, existingProducts.validProducts);
             //obtener el carrito por su id
             const carritoUsuario = await cartsService.getCartById(cartId);
+            console.log('carritoUsuario', carritoUsuario)
 
             // Una vez que se hayan agregado los productos al carrito, enviar una respuesta adecuada
             res.status(200).json({ success: true, message: 'Productos agregados al carrito con éxito', carritoUsuario });
         
 
         } else {
+            console.log('se va actualizar el carrito del usuario: ', userId)
             // Si no hay un ID de usuario en la solicitud, el usuario no está autenticado
-            console.log('no se envió información de un usuario')
+            
             
             // Crear un nuevo carrito temporal con los productos verificados
             const carritoTemporal = await cartsService.createCart(existingProducts.validProducts);
             
+            //obtener el carrito por su id
+            const carritoUsuario = await cartsService.getCartById(carritoTemporal.carrito._id);
+            console.log('carritoUsuario', carritoUsuario)
             // Una vez que se hayan agregado los productos al carrito, enviar una respuesta adecuada
-            res.status(200).json({ success: true, message: 'Productos agregados al carrito con éxito', carritoTemporal });
+            res.status(200).json({ success: true, message: 'Productos agregados al carrito con éxito', carritoUsuario });
         }
 
         
@@ -158,16 +171,18 @@ async function updateCart (req , res){
     myCustomLogger.test('ejecutando updateCart en carts.controller.js')    
     const {cartId}=req.params;  // Obtener el ID de usuario de la solicitud
     const newValues= req.body; // obtener los productos
-
-    console.log('productos recibidos en updateCart', newValues)
+    
     //verifica que los productos existan
     const existingProducts = await verifyProducts(newValues.products)
-    console.log(existingProducts.validProducts)
+    
     try {
         const carritoActualizado = await updateCartProducts(cartId, existingProducts.validProducts);
+        
         //obtener el carrito por su id
         const carritoUsuario = await cartsService.getCartById(cartId);
-        res.status(200).json({success: true, message: 'Carrito actualizado con éxito:', carritoUsuario});
+        console.log('carritoUsuario', carritoUsuario)
+        // Una vez que se hayan agregado los productos al carrito, enviar una respuesta adecuada
+        res.status(200).json({ success: true, message: 'Productos agregados al carrito con éxito', carritoUsuario });
         
 
     } catch (error) {

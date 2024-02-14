@@ -62,9 +62,11 @@ User
                             cart: data.user.cart,
                             _id: data.user._id
                         }));
-                        console.log(data)
+                        localStorage.setItem('cart', JSON.stringify({
+                            cart: data.user.cart,}));
+                        
                         // Redirigir al usuario a la página de inicio
-                        //window.location.href = `${baseURL}/home`;
+                        window.location.href = `${baseURL}/home`;
                     });
                 }
             })

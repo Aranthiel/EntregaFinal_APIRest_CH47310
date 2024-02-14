@@ -29,19 +29,19 @@ class CartsService {
 
     async createCart(products){
         myCustomLogger.test('ejecutando createCart en carts.service.js');
-        console.log('products en create cart', products)
+        
         const cartProducts = {
             products: products.map(product => ({
                 productoId: product.productId,
                 quantity: product.quantity
             }))
         }; 
-        console.log('cartProducts en createCart service', cartProducts)
+        
         try {
             // Crear el carrito con los productos actualizados
-            const response = await cartsPersistence.createOne(cartProducts);
+            const carrito = await cartsPersistence.createOne(cartProducts);
             // Devolver el carrito con los productos 
-            return {response, message: 'Carrito creado con éxito'  };
+            return {carrito, message: 'Carrito creado con éxito'  };
         } catch (error) {
             console.error('Error al crear el carrito:', error);
             return error;
@@ -57,13 +57,13 @@ class CartsService {
                 quantity: product.quantity
             }))
         }; 
-        console.log('cartProducts en updateCart service', cartProducts)
+        
         try {
             // Actualizar el carrito con los productos actualizados
-            const response = await cartsPersistence.updateOne(cartId, cartProducts);
+            const carrito = await cartsPersistence.updateOne(cartId, cartProducts);
     
             // Devolver el carrito con los productos actualizados
-            return {response, message: 'Carrito actualizado con éxito'  };
+            return {carrito, message: 'Carrito actualizado con éxito'  };
         } catch (error) {
             console.error('Error al actualizar el carrito:', error);
             return error;

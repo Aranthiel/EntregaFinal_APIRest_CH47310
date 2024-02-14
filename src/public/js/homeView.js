@@ -1,4 +1,18 @@
 console.log('homeView is Alive!')
+
+// Función para obtener los datos del usuario del Local Storage y mostrarlos en la página
+function displayUserInfo() {
+    const userData = JSON.parse(localStorage.getItem('APIuser'));
+    if (userData) {
+        console.log('displaying UserInfo')
+        document.getElementById('first-name').textContent = userData.first_name;
+        document.getElementById('email').textContent = userData.email;
+        document.getElementById('cart-id').textContent = userData.cart;
+        console.log('userData..first_name', userData.first_name)
+        console.log('userData..cart', userData.cart)
+        console.log('userData.email', userData.email)
+    }
+} 
 const baseURL = "http://localhost:8080";
 function fetchProducts() {
     return fetch(`${baseURL}/api/products`)
@@ -92,6 +106,8 @@ function renderProducts(products) {
 
 window.addEventListener('load', async function() {
     try {
+        console.log('displayUserInfo')
+        displayUserInfo();
         const products = await fetchProducts(); // Obtener productos usando la función
         renderProducts(products); // Renderizar productos
     } catch (error) {
@@ -108,29 +124,55 @@ function handleDetailsClick(event) {
 
 async function handleAddToCartClick(event) {
     const productId = event.target.dataset.productId;   
-    const currentCartId = document.getElementById('cartId').dataset.cartid;
 
-    console.log(`Se hizo clic en Agregar al carrito ${currentCartId} el producto con ID ${productId}`);
+    // Obtener información del usuario del Local Storage
+    const userData = JSON.parse(localStorage.getItem('APIuser'));
+    
+    // Obtener el carrito almacenado en el Local Storage
+    const storedCart = JSON.parse(localStorage.getItem('cart'));
+    
+    let currentCartId
+    let currentUserId
 
-    const updateCartUrl = `/api/carts/${currentCartId}`;
-    console.log('updateCartUrl', updateCartUrl)
-    if (updateCartUrl === '/api/carts/'){
-        console.log('hay que crear un carrito')
-        console.log(document.cookie);
+    if(userData === null){
+        //si no hay usuario guardado en localSrotage, definimos el id del usuario como "nouser"
+        currentUserId = "nouser";
+        if(storedCart ===null){
+            //si tampoco hay almacenado un carrito, definimos el id como null
+            currentCartId = null
+        } else {
+            //si hay un carrito ya almacenado, tomamos el id
+            currentCartId = storedCart.cart;
+        }
+    } else {
+        //si hay usuario guardado en local stogae, sacamos la info del usrId y cart Id de ahi
+        currentCartId = userData.cart;
+        currentUserId = userData._id;
+    } 
+    
+    let actionUrl;
+    let method;
+
+    if(currentCartId === null){
+        actionUrl = `/api/carts/addproduct/${currentUserId}`;
+        method = "POST";
         
-        //apiCartsRouter.post('/:userId', addCart ); 
+    } else {
+        actionUrl = `/api/carts/${currentCartId}`;
+        method = "PUT";
     }
-
+    console.log(`se va a realizar una peticion ${method} a la URL ${actionUrl}`)
+    
     try {
-        const response = await fetch(updateCartUrl, {
-            method: 'PUT',
+        const response = await fetch(actionUrl, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 products: [
                     {
-                        productoId: productId,
+                        productId: productId,
                         quantity: 1
                     }
                 ]
@@ -138,14 +180,19 @@ async function handleAddToCartClick(event) {
         });
 
         if (response.ok) {
-            // El producto se agregó al carrito exitosamente
-            console.log('Producto agregado al carrito exitosamente.');
-            // Puedes hacer algo aquí después de agregar el producto al carrito si es necesario
+            // El producto se agregó o actualizó en el carrito exitosamente
+            const responseData = await response.json();
+            const carritoUsuario = responseData.carritoUsuario;
+            console.log('Carrito del usuario:', carritoUsuario);
+
+            // Actualizar el carrito almacenado en el Local Storage
+            localStorage.setItem('cart', JSON.stringify({ cart: carritoUsuario._id }));
         } else {
-            console.error('Error al agregar el producto al carrito:', response.status, response.statusText);
+            console.error('Error al agregar o actualizar el producto en el carrito:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error en la solicitud fetch:', error);
     }
 }
+
 
