@@ -44,7 +44,7 @@ class UsersService{
         try {
             const hashedPassword= await hashData(password);
             const response = await usersPersistence.createOne({...obj, password:hashedPassword,});
-            console.log('Usuario creado con éxito:', response);
+            
             return response;
         } catch (error) {
             console.error('Error al crear el usuario:', error);
@@ -56,7 +56,7 @@ class UsersService{
         //console.log('ejecutando updateUser en users.service.js');
         try {
             const response = await usersPersistence.updateOne(id, obj);
-            console.log('Usuario actualizado con éxito:', response);
+            
             return response;
         } catch (error) {
             console.error('Error al actualizar el usuario:', error);

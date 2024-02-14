@@ -1,45 +1,77 @@
-<form id="loginForm" action="/api/auth/login" method="post">
+<h1>LOGIN</h1>
+User
+<form id="loginForm" >
     email: <input type="email" name="email" id="email">
     password: <input type="password" name="password" id="password">
-    <input type="submit" value="Local Loguin"> <!-- Botón para enviar el formulario normalmente -->
 
-    <button onclick="sendToPassportLocal()">Passport Local</button> <!-- Botón para Passport Local -->
-    <button onclick="location.href='/api/auth/githubAuth'">GitHub</button> <!-- Botón para GitHub -->
+    <button type="button" id="localLogin">Local Login</button>
+    <button type="button" id="passportLogin">Passport Login</button>
+    <button type="button" id="githubLogin">Github Login</button>    
 </form>
-
-<p>Si aun no lo hiciste, <a href="/signup">Registrate acá</a></p>
+<p>Si aun no lo hiciste, <a href="{{baseURL}}//signup">Registrate acá</a></p>
 
 <script>
-    function sendToPassportLocal() {
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        alert('La función sendToPassportLocal se está ejecutando y hará un fetch a /api/auth/passportlogin');
+    document.addEventListener('DOMContentLoaded', () => {
+        const baseURL = "http://localhost:8080";
+        
+        const localLoginBtn = document.getElementById('localLogin');
+        const passportLoginBtn = document.getElementById('passportLogin');
+        const githubLoginBtn = document.getElementById('githubLogin');
 
-        // Construir el objeto con los datos del formulario
-        var formData = {
-            email: email,
-            password: password
-        };
-
-        // Enviar los datos al endpoint de Passport Local utilizando Fetch API con método POST
-        fetch('/api/auth/passportlogin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            // Manejar la respuesta del servidor aquí
-            if (response.ok) {
-                console.log('PASSPORT LOCAL LOGIN OK');
-            } else {
-                // Manejar errores de autenticación u otras respuestas no exitosas
-                console.error('Error en la autenticación');
-            }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
+        localLoginBtn.addEventListener('click', () => {
+            sendForm(`${baseURL}/api/auth/login`);
         });
-    }
+
+        passportLoginBtn.addEventListener('click', () => {
+            alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
+        });
+
+        githubLoginBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
+        });
+
+        function sendForm(url) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const formData = {
+                email: email,
+                password: password
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json().then(data => {
+                        // Almacenar el token en una cookie con una duración de 1 hora
+                        document.cookie = `token=${data.token}; expires=${new Date(Date.now() + 3600000).toUTCString()}; path=/`;
+                        
+                        // Almacenar la información del usuario en el localStorage
+                        localStorage.setItem('APIuser', JSON.stringify({
+                            first_name: data.user.first_name,
+                            last_name: data.user.last_name,
+                            email: data.user.email,
+                            from_github: data.user.from_github,
+                            cart: data.user.cart,
+                            _id: data.user._id
+                        }));
+                        console.log(data)
+                        // Redirigir al usuario a la página de inicio
+                        //window.location.href = `${baseURL}/home`;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar la petición:', error);
+            });
+        }
+
+    });
 </script>

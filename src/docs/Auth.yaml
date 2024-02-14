@@ -112,9 +112,8 @@ paths:
                   token:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                  userId:
-                    type: string
-                    example: "65bff812923ef26fe65e909c"
+                  user:
+                    type: object
         '401':
           description: Unauthorized, invalid credentials
           content:

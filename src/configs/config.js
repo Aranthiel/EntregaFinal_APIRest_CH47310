@@ -40,4 +40,5 @@ export default{
     cookie_secret : process.env.COOKIE_SECRET,
     jwt_secret: process.env.JWT_SECRET,
     persistencia : program.opts().db,
+    express_secret : process.env.SESSION_SECRET
 }

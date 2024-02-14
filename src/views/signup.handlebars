@@ -11,45 +11,31 @@ User
     <button type="button" id="githubSignup">Github Signup</button>
 </form>
 <p>Si ya estás registrado, <a href="{{baseURL}}/login">Ingresá a tu cuenta</a></p>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const baseURL = "http://localhost:8080";
-        console.log('new FormData()');
+        
         
         const localSignupBtn = document.getElementById('localSignup');
         const passportSignupBtn = document.getElementById('passportSignup');
         const githubSignupBtn = document.getElementById('githubSignup');
+        
 
         localSignupBtn.addEventListener('click', () => {
-            sendForm(`${baseURL}/api/auth/signup`);
+            sendForm(`${baseURL}/api/auth/registro`);
         });
 
         passportSignupBtn.addEventListener('click', () => {
-            sendForm(`${baseURL}/api/auth/passportsignup`);
+            //sendForm(`${baseURL}/api/auth/passportsignup`);
+            alert('esta funciòn aun no está implementada!, estamos trabajando para brindarte mas opciones de registro')
         });
 
         githubSignupBtn.addEventListener('click', (event) => {
         // Detener el comportamiento predeterminado de enviar el formulario
-        event.preventDefault();
-        console.log('click en githubSignupBtn')
-
-        // Lógica para realizar la solicitud GET a /api/auth/githubauth
-        fetch(`${baseURL}/api/auth/githubauth`)
-            .then(response => {
-                // Manejar la respuesta del servidor aquí
-                console.log('Respuesta recibida:', response);
-
-                if (response.redirected) {
-                    console.log('response.redirected')
-                    // Redirigir al usuario si la respuesta indica una redirección
-                    window.location.href = response.url;
-                }
-            })
-            .catch(error => {
-                // Manejar cualquier error
-                console.error('Error al enviar la petición:', error);
-            });
-    });
+            event.preventDefault();
+            alert('esta funciòn aun no está implementada!, estamos trabajando para brindarte mas opciones de registro')
+        });
 
         function sendForm(url) {
             
@@ -74,14 +60,50 @@ User
                 .then(response => {
                     // Manejar la respuesta del servidor aquí
                     console.log('Respuesta recibida:', response);
-                    if (response.redirected) {
-                        console.log('response.redirected')
-                        // Redirigir al usuario si la respuesta indica una redirección
-                        window.location.href = response.url;
+                    if (response.status === 200) {
+                        // Registro exitoso, procedemos a iniciar sesión
+                        loginUser(email, password);
                     }
                 })
                 .catch(error => {
                     // Manejar cualquier error
+                    console.error('Error al enviar la petición:', error);
+                });
+        }
+
+        function loginUser(email, password) {
+            fetch(`${baseURL}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                })
+            })
+                .then(response => {
+                    console.log('Respuesta recibida:', response);
+                    if (response.status === 200) {
+                        response.json().then(data => {
+                            console.log('Usuario logueado:', data);
+                            // Almacenar el token y la información del usuario en una cookie
+                            document.cookie = `token=${data.token}`;
+                            document.cookie = `user=${JSON.stringify({
+                                first_name: data.first_name,
+                                last_name: data.last_name,
+                                email: data.email,
+                                from_github: data.from_github,
+                                cart: data.cart,
+                                _id: data._id,
+                                __v: data.__v
+                            })}`;
+                            // Redirigir al usuario a la página de inicio
+                            window.location.href = `${baseURL}/home`;
+                        });
+                    }
+                })
+                .catch(error => {
                     console.error('Error al enviar la petición:', error);
                 });
         }

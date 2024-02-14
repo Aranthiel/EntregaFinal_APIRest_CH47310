@@ -26,6 +26,10 @@ import path from 'path';
 //socket.io 
 import { initializeSocket } from "./socket/socketServer.js";
 
+// session
+import session from "express-session";
+import {mySession}from './configs/persistenceManager.js';
+
 //coockie parser
 //session
 //CORS
@@ -49,6 +53,9 @@ app.engine("handlebars", engine());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
 
+// session
+//IMPORTANTE siempre tiene que estar definido ANTES DE LAS RUTAS
+app.use(session(mySession));
 
 // RUTAS
 app.use("/api", apiRouter);

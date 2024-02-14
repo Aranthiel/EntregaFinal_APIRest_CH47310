@@ -64,13 +64,13 @@ async function getUserByEmail (req, res){
 async function addUser (req, res){
     console.log('ejecutando addUser en users.controller.js')   
     const userInfo= req.body 
-    console.log(userInfo)   
+    console.log('userInfo password  en addUser', userInfo.password)   
     const emptyCartId= await newEmptyCart();    
     const nuevoUsuario = {
         ...userInfo,  // Spread properties of userInfo
         cart: emptyCartId // Add cartId property
     };
-    
+    console.log('nuevoUsuario password en addUser', nuevoUsuario.password) 
     try {
         const usuarioAgregado = await usersService.createUser(nuevoUsuario);
         if (usuarioAgregado instanceof Error){
