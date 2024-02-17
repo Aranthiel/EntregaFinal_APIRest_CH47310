@@ -5,7 +5,7 @@ import config from '../configs/config.js'
 
 const authenticateToken = (req, res, next) => {
     const token = req.headers.authorization;
-    console.log("token recibido middlAuth", token)
+   //console.log("token recibido middlAuth", token)
 
     if (!token) {
         return res.status(401).json({ success: false, message: 'Token no proporcionado' });

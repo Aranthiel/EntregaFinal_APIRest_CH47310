@@ -1,5 +1,5 @@
 
-console.log("It's alive!");
+console.log("RTP It's alive!");
 
 const socketClient = io();
 const form = document.getElementById("productForm");
@@ -15,8 +15,35 @@ deleteButton.textContent = "Eliminar Productos";
 let productos = [];
 //console.log('productos', productos);
 
+// Función para recuperar el valor de una cookie por su nombre
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 form.addEventListener("submit", (event) => {
     event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+    
+    // Recuperar el token almacenado en la cookie
+    const token = getCookie('token');
+    
+    
+    if (!token) {
+        // Si no hay un token almacenado, redirigir al usuario al login y mostrar una alerta
+        Swal.fire({
+            title: 'Debes estar logueado',
+            text: 'Para agregar un nuevo producto, debes iniciar sesión',
+            icon: 'warning',
+            confirmButtonText: 'Ir al login'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirigir al usuario al login
+                window.location.href = '/login';
+            }
+        });
+        return; // Detener la ejecución del código
+    }
     
     // Obtener los valores del formulario
     const title = document.getElementById("title").value;
@@ -34,7 +61,8 @@ form.addEventListener("submit", (event) => {
         status,
         stock,
         category,
-        limit: 30, 
+        limit: 30,
+        token, 
     };
 
 
@@ -72,7 +100,7 @@ function renderProducts(productos) {
     div.appendChild(title);
     div.appendChild(ul);
     div.appendChild(deleteButton);
-}
+}; // funciona ok 17/02
 
 // Escuchar el evento para recibir los productos iniciales
 socketClient.on("productosInicialesRT", (productosIniciales) => {
@@ -80,7 +108,7 @@ socketClient.on("productosInicialesRT", (productosIniciales) => {
     //console.log('productosIniciales en realtimeproducts.js', productosIniciales);
     productos = productosIniciales.products;
     renderProducts(productos);
-});
+}); // funciona ok 17/02
 
 socketClient.on("productsUpdated", (productosActualizados) => {
     console.log(' escuchando el evento productsUpdated')
@@ -96,6 +124,10 @@ deleteButton.addEventListener("click", () => {
         return checkbox.id.replace("checkbox_", "");
     });
 
+    // Recuperar el token almacenado en la cookie
+    const token = getCookie('token');
+    console.log('token', token)
+
     const confirmation = Swal.fire({
         title: '¿Quieres borrar esto?',
         text: `Ha seleccionado ${selectedProductIds.length} productos para eliminar`, 
@@ -110,7 +142,7 @@ deleteButton.addEventListener("click", () => {
         if (result.isConfirmed) {
             // Emitir el evento "borrar" con los IDs de los productos seleccionados
             console.log('Enviando evento "borrar" con los siguientes datos:', selectedProductIds);
-            socketClient.emit("borrar", selectedProductIds);
+            socketClient.emit("borrar", selectedProductIds, token);
 
             // Desmarcar las checkbox
             selectedCheckboxes.forEach((checkbox) => {

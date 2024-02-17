@@ -89,7 +89,7 @@ export function initializeSocket(server) {
         //funcion para hacer fetch a `${BASE_URL}/api/products/` y devolver una response de forma de reemplazar getAllProductsC por esta funcion en el resto del codigo
 
         socket.on('addProduct', async (nProduct) => {
-            myCustomLogger.test('Evento "addProduct" recibido en el servidor con los siguientes datos:', nProduct);
+            //console.log('Evento "addProduct" recibido en el servidor con los siguientes datos:', nProduct);
             
             const newProductData = {
                 title: nProduct.title,
@@ -99,12 +99,14 @@ export function initializeSocket(server) {
                 code: nProduct.code,
                 stock: nProduct.stock
             };
+            const token = nProduct.token
 
             try {
                 const response = await fetch(`${BASE_URL}/api/products/`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': token  // `Bearer ${token}` Incluir el token en el encabezado de autorización
                     },
                     body: JSON.stringify(newProductData)
                 });
@@ -122,15 +124,21 @@ export function initializeSocket(server) {
         });
         
 
-        socket.on('borrar', async (selectedProductIds) => {
-            myCustomLogger.test('Evento "borrar" recibido en el servidor con los siguientes datos:', selectedProductIds);
+        socket.on('borrar', async (selectedProductIds, token) => {
+            //console.log('Evento "borrar" recibido en el servidor con los siguientes datos:', selectedProductIds);
+            
             try {
                 for (const productId of selectedProductIds) {
+                    const authToken = token; 
+                    
                     try {
                         const response = await fetch(`${BASE_URL}/api/products/${productId}`, {
-                            method: 'DELETE'
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': authToken // Usar authToken aquí
+                            }
                         });
-
+        
                         if (!response.ok) {
                             console.error("Error al eliminar el producto: ", response.status, response.statusText);
                         }
@@ -138,7 +146,7 @@ export function initializeSocket(server) {
                         console.error("Error al eliminar el producto:", error);
                     }
                 }
-
+        
                 myCustomLogger.test('Todas las eliminaciones se completaron con éxito');
                 const productosActualizados = await getAllProductsSocket();
                 socketServer.emit('productsUpdated', productosActualizados);
@@ -146,6 +154,7 @@ export function initializeSocket(server) {
                 console.error('Error durante la eliminación:', error);
             }
         });
+        
     };
 
 };

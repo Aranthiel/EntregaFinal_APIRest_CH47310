@@ -50,9 +50,11 @@ User
             .then(response => {
                 if (response.status === 200) {
                     response.json().then(data => {
-                        // Almacenar el token en una cookie con una duración de 1 hora
-                        document.cookie = `token=${data.token}; expires=${new Date(Date.now() + 3600000).toUTCString()}; path=/`;
-                        
+                        // Almacenar el token en una cookie con una duración de una semana
+                        const oneWeek = 7 * 24 * 60 * 60 * 1000; // Una semana en milisegundos
+                        const expirationDate = new Date(Date.now() + oneWeek);
+                        document.cookie = `token=${data.token}; expires=${expirationDate.toUTCString()}; path=/`;
+
                         // Almacenar la información del usuario en el localStorage
                         localStorage.setItem('APIuser', JSON.stringify({
                             first_name: data.user.first_name,
