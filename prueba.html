@@ -1,6 +1,10 @@
 <h3>Detalle de carrito id {{cart}}</h3>
 
-<table id="cartDetailTable" >
+<div class="flexContainer">
+    <ul id="cartDetailUl"></ul>
+</div>
+
+<table id="cartDetailTable" style="display: none;">
     <thead>
         <tr>
             <th>Producto</th>
@@ -29,24 +33,5 @@
     </tbody>
 </table>
 
-<div>
-    <button id="volverAlHome">Volver al home</button>
-    <button id="confirmarCompra">Confirmar compra</button>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/cartDetail.js"></script>
-
-<script>
-    // Agregar evento de clic al botón "Volver al home"
-    document.getElementById('volverAlHome').addEventListener('click', () => {
-        window.location.href = `${baseURL}/home`;
-    });
-
-    // Agregar evento de clic al botón "Confirmar compra"
-    document.getElementById('confirmarCompra').addEventListener('click', () => {
-        // Aquí puedes redirigir a la página de confirmación de compra, si tienes una URL definida
-        // Si no tienes una página de confirmación, puedes redirigir al home o a cualquier otra página relevante
-        window.location.href = `${baseURL}/confirmar`;
-    });
-</script>
