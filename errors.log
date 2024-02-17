@@ -138,3 +138,13 @@
   level: 'error',
   timestamp: '2024-02-12T18:49:34.907Z'
 }
+{
+  message: 'ERROR:NOT FOUND. El producto 65cc41267d31b595b8a088da NO se encuentra en el listado de productos, por favor ingrese un producto válido',
+  level: 'error',
+  timestamp: '2024-02-14T05:47:54.122Z'
+}
+{
+  message: 'ERROR:NOT FOUND. El producto 65cc41267d31b595b8a088da NO se encuentra en el listado de productos, por favor ingrese un producto válido',
+  level: 'error',
+  timestamp: '2024-02-14T05:48:29.096Z'
+}

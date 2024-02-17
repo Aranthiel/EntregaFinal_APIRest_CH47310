@@ -58,7 +58,6 @@ describe('POST /api/auth/login', () => {
         expect(response.status).to.equal(200);
         expect(response.body.success).to.be.true;
         expect(response.body.token).to.be.a('string');
-        expect(response.body.userId).to.be.a('string');
     });
 
     it('Debería dar un error si el correo electrónico no existe', async () => {

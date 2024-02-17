@@ -8,13 +8,17 @@ function displayUserInfo() {
         document.getElementById('first-name').textContent = userData.first_name;
         document.getElementById('email').textContent = userData.email;
         document.getElementById('cart-id').textContent = userData.cart;
-        console.log('userData..first_name', userData.first_name)
-        console.log('userData..cart', userData.cart)
+        console.log('userData.first_name', userData.first_name)
+        console.log('userData.cart', userData.cart)
         console.log('userData.email', userData.email)
+    }
+    else {
+        console.log('no hay innformacion del usuario')
     }
 } 
 const baseURL = "http://localhost:8080";
 function fetchProducts() {
+    console.log('fetchingProducts')
     return fetch(`${baseURL}/api/products`)
         .then(response => response.json())
         .then(data => data.products)
@@ -125,19 +129,26 @@ function handleDetailsClick(event) {
 async function handleAddToCartClick(event) {
     const productId = event.target.dataset.productId;   
 
+    let currentUserId
     // Obtener información del usuario del Local Storage
     const userData = JSON.parse(localStorage.getItem('APIuser'));
     
+    let currentCartId
     // Obtener el carrito almacenado en el Local Storage
     const storedCart = JSON.parse(localStorage.getItem('cart'));
+    if(!storedCart){
+        console.log('storedCart es null, no hay un carrito almacenado hv')
+        //si tampoco hay almacenado un carrito, definimos el id como null
+        currentCartId = null
+    }
     
-    let currentCartId
-    let currentUserId
-
+    
     if(userData === null){
+        console.log('userData es null, no hay un usiario almacenado')
         //si no hay usuario guardado en localSrotage, definimos el id del usuario como "nouser"
         currentUserId = "nouser";
-        if(storedCart ===null){
+        if(!storedCart){
+            console.log('storedCart es null, no hay un carrito almacenado hv')
             //si tampoco hay almacenado un carrito, definimos el id como null
             currentCartId = null
         } else {

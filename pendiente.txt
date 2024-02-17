@@ -5,15 +5,15 @@ LISTO crear pruebas unitarias para los endpoints
 implementar roles:
 - admin
 
-implementar socket.io
+implementar socket.io [LISTO]
 
 implementar handlebars:
-- chat
-- Actualizacion de productos en tiempo real (solo admin)
-- vista login
-- vista registro
-- vista de productos
-- vista de carritos
+- chat {listo}
+- Actualizacion de productos en tiempo real (solo admin)--- PENDIENTE, hay quye modificar el codigo para quue se envie un token ya que la ruta esta protegida
+- vista login PARCIAL La vista está, el loguin se hace correctamente, pero bo "redirige" al home
+- vista registro PARCIAL la vista esta, pero No funciona
+- vista de productos [se ven el home]
+- vista de mi carrito PENDIENTE
 
 
 implementar mailing

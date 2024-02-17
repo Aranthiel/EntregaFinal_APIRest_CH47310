@@ -62,6 +62,12 @@
             console.log('userdata._id', userData._id)
         }else {
             const storedCart = JSON.parse(localStorage.getItem('cart'));
+            if (!storedCart) {
+                console.log('storedCart es null, no hay un carrito almacenado')
+                // Si no hay un carrito almacenado,
+                document.getElementById('cartLink').href = `{{baseURL}}/cart/`;
+            }
+            else {
             document.getElementById('cartLink').href = `{{baseURL}}/cart/${storedCart.cart}`;
         }
     } 
