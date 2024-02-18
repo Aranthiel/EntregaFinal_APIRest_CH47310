@@ -6,7 +6,11 @@ import { compareData } from '../utils.js';
 import jwt from 'jsonwebtoken';
 //variables de entorno
 import config from '../configs/config.js'
+// passport
+import passport from 'passport';
 
+
+// sin passport
 export const registerUser = async (req, res) => {
     try {
         const {  email} = req.body;
@@ -86,3 +90,49 @@ export const logoutUser = async (req, res)=>{
         res.status(500).json({ success: false, message: 'Error al cerrar sesión' });
     }
 }
+
+// Controlador para el inicio de sesión con Passport local
+export const loginPassportL = (req, res, next) => {
+    passport.authenticate('login', { session: false }, (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: err.message });
+        }
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Credenciales inválidas' });
+        }
+
+        try {
+            // Almacenar la información de la sesión
+            req.session.user = { 
+                userId: user._id, 
+                email: user.email, 
+                first_name: `${user.first_name} ${user.last_name}`, 
+                cart: user.cart 
+            };
+
+            // Generar un token JWT
+            const token = jwt.sign({ 
+                userId: user._id, 
+                email: user.email 
+            }, config.jwt_secret, {
+                expiresIn: '1h',
+            });
+
+            // Devolver el token y otros detalles del usuario en la respuesta
+            res.status(200).json({ 
+                success: true, 
+                token, 
+                user: {
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    from_github: user.from_github,
+                    cart: user.cart,
+                    _id: user._id,
+                } 
+            });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    })(req, res, next);
+};

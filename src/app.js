@@ -34,6 +34,8 @@ import {mySession}from './configs/persistenceManager.js';
 //session
 //CORS
 //passport
+import passport from 'passport';
+import './configs/passportConfig.js';
 
 
 ////////////////////////  mi app //////////////////////////////////////
@@ -56,6 +58,11 @@ app.set("view engine", "handlebars");
 // session
 //IMPORTANTE siempre tiene que estar definido ANTES DE LAS RUTAS
 app.use(session(mySession));
+
+//passport 
+//SIEMPRE tiene que estar declarado despues de session para que funcione correctamente!
+app.use(passport.initialize());
+app.use(passport.session());
 
 // RUTAS
 app.use("/api", apiRouter);

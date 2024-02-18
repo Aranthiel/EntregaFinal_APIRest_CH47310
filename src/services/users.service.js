@@ -41,6 +41,7 @@ class UsersService{
     async createUser(obj) {
         //console.log('ejecutando createUser en users.service.js');
         const {password} = obj; 
+        
         try {
             const hashedPassword= await hashData(password);
             const response = await usersPersistence.createOne({...obj, password:hashedPassword,});

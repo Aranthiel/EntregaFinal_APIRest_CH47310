@@ -23,7 +23,9 @@ User
         });
 
         passportLoginBtn.addEventListener('click', () => {
-            alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
+            console.log('click en passportLoginBtn')
+            sendForm(`${baseURL}/api/auth/pllogin`);
+            //alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
         });
 
         githubLoginBtn.addEventListener('click', (event) => {
