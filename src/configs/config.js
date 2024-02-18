@@ -40,5 +40,8 @@ export default{
     cookie_secret : process.env.COOKIE_SECRET,
     jwt_secret: process.env.JWT_SECRET,
     persistencia : program.opts().db,
-    express_secret : process.env.SESSION_SECRET
+    express_secret : process.env.SESSION_SECRET,
+    ghithub_client_id: process.env.GITHUB_CLIENT_ID,
+    github_client_secret: process.env.GITHUB_CLIENT_SECRET,
+    github_callback_url: process.env.GITHUB_CALLBACK_URL
 }

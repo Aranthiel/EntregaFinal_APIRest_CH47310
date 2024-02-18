@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 //variables de entorno
 import config from './config.js'
 
-// LOCAL
+// PASSPORT LOCAL
 passport.use(
     "signup",
     new LocalStrategy(
@@ -26,6 +26,7 @@ passport.use(
                 return done(null, false);
             }
             const userInfo= req.body 
+            
     
             const emptyCartId= await newEmptyCart();    
             const nuevoUsuario = {
@@ -74,6 +75,52 @@ passport.use(
     )
 );
 
+// PASSPORT GTHUB
+passport.use(
+    'github', new GithubStrategy (
+        {
+            clientID: config.ghithub_client_id,
+            clientSecret: config.github_client_secret,
+            callbackURL: config.github_callback_url,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log('github strategy on passport config')
+            try {
+                // Verifica si el correo electrónico ya está registrado
+                const user = await usersService.getUserByEmail( profile._json.email );
+                
+                //login
+                if (user) {
+                    if (user.from_github) {
+                        // Si el usuario ya existe y es de GitHub, se autentica sin modificar la sesión
+                        return done(null, user);
+                    } else {
+                        // Si el usuario ya existe y NO es de GitHub, se rechaza la autenticacion                        
+                        return done(null, false);
+                    }
+                }
+
+                //signup
+                const emptyCartId= await newEmptyCart()  
+                
+
+                const userInfo={
+                    first_name:profile._json.login,
+                    last_name:profile._json.login,
+                    email:profile._json.email,
+                    cart: emptyCartId,
+                    from_github: true,
+                    password:'fromgithub'
+                }
+                
+                const usuarioAgregado = await usersService.createUser(userInfo);
+                done(null, usuarioAgregado);
+            } catch (error) {
+                done(error);
+            }
+        }
+    )
+)
 
 
 // configuracion necesaria para passport

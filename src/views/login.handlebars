@@ -5,32 +5,31 @@ User
     password: <input type="password" name="password" id="password">
 
     <button type="button" id="localLogin">Local Login</button>
-    <button type="button" id="passportLogin">Passport Login</button>
-    <button type="button" id="githubLogin">Github Login</button>    
+    <button type="button" id="passportLogin">Passport Login</button>    
 </form>
+
+<button onclick="githubOnCLick()"  action="{{baseURL}}/api/auth/githubauth">  ingresar con Github </button>   
 <p>Si aun no lo hiciste, <a href="{{baseURL}}//signup">Registrate acá</a></p>
 
 <script>
+    const baseURL = "http://localhost:8080";
+    
+    function githubOnCLick() {
+        console.log(' click en  ingresar con Github ');
+        console.log(`${baseURL}/api/auth/githubauth`)
+        window.location.href = `/api/auth/githubauth`        
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
-        const baseURL = "http://localhost:8080";
-        
         const localLoginBtn = document.getElementById('localLogin');
         const passportLoginBtn = document.getElementById('passportLogin');
-        const githubLoginBtn = document.getElementById('githubLogin');
-
+        
         localLoginBtn.addEventListener('click', () => {
             sendForm(`${baseURL}/api/auth/login`);
         });
 
         passportLoginBtn.addEventListener('click', () => {
-            console.log('click en passportLoginBtn')
             sendForm(`${baseURL}/api/auth/pllogin`);
-            //alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
-        });
-
-        githubLoginBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            alert('Esta función aún no está implementada. Estamos trabajando para brindarte más opciones de inicio de sesión.');
         });
 
         function sendForm(url) {
@@ -52,12 +51,10 @@ User
             .then(response => {
                 if (response.status === 200) {
                     response.json().then(data => {
-                        // Almacenar el token en una cookie con una duración de una semana
-                        const oneWeek = 7 * 24 * 60 * 60 * 1000; // Una semana en milisegundos
+                        const oneWeek = 7 * 24 * 60 * 60 * 1000; 
                         const expirationDate = new Date(Date.now() + oneWeek);
                         document.cookie = `token=${data.token}; expires=${expirationDate.toUTCString()}; path=/`;
 
-                        // Almacenar la información del usuario en el localStorage
                         localStorage.setItem('APIuser', JSON.stringify({
                             first_name: data.user.first_name,
                             last_name: data.user.last_name,
@@ -67,9 +64,9 @@ User
                             _id: data.user._id
                         }));
                         localStorage.setItem('cart', JSON.stringify({
-                            cart: data.user.cart,}));
-                        
-                        // Redirigir al usuario a la página de inicio
+                            cart: data.user.cart,
+                        }));
+
                         window.location.href = `${baseURL}/home`;
                     });
                 }
@@ -79,5 +76,6 @@ User
             });
         }
 
-    });
+    }); 
 </script>
+

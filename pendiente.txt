@@ -15,6 +15,9 @@ implementar handlebars:
 - vista de productos [se ven el home] LISTO
 - vista de mi carrito LISTO
 
+implementar passpor:
+Passport local LISTO
+passport Github
 
 implementar pasarela de pago y mailing
 - confirmacion de compra

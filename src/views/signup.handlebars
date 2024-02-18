@@ -8,18 +8,22 @@ User
     Password: <input type="password" name="password" id="password">
     <button type="button" id="localSignup">Local Signup</button>
     <button type="button" id="passportSignup">Passport Signup</button>
-    <button type="button" id="githubSignup">Github Signup</button>
 </form>
+<button onclick="githubOnCLick()"  action="{{baseURL}}/api/auth/githubauth">  ingresar con Github </button>   
 <p>Si ya estás registrado, <a href="{{baseURL}}/login">Ingresá a tu cuenta</a></p>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const baseURL = "http://localhost:8080";
-        
-        
+    const baseURL = "http://localhost:8080";
+
+    function githubOnCLick() {
+        console.log(' click en  ingresar con Github ');
+        console.log(`${baseURL}/api/auth/githubauth`)
+        window.location.href = `/api/auth/githubauth`        
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {   
         const localSignupBtn = document.getElementById('localSignup');
         const passportSignupBtn = document.getElementById('passportSignup');
-        const githubSignupBtn = document.getElementById('githubSignup');
         
 
         localSignupBtn.addEventListener('click', () => {
@@ -29,12 +33,6 @@ User
         passportSignupBtn.addEventListener('click', () => {
             sendForm(`${baseURL}/api/auth/plsignup`);
             //alert('esta funciòn aun no está implementada!, estamos trabajando para brindarte mas opciones de registro')
-        });
-
-        githubSignupBtn.addEventListener('click', (event) => {
-        // Detener el comportamiento predeterminado de enviar el formulario
-            event.preventDefault();
-            alert('esta funciòn aun no está implementada!, estamos trabajando para brindarte mas opciones de registro')
         });
 
         function sendForm(url) {
