@@ -17,7 +17,7 @@ implementar handlebars:
 
 implementar passpor:
 Passport local LISTO
-passport Github
+passport Github CASI LISTO
 
 implementar pasarela de pago y mailing
 - confirmacion de compra

@@ -37,6 +37,8 @@ import {mySession}from './configs/persistenceManager.js';
 import passport from 'passport';
 import './configs/passportConfig.js';
 
+//
+
 
 ////////////////////////  mi app //////////////////////////////////////
 const app = express();

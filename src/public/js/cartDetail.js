@@ -9,6 +9,7 @@ function extractCidFromURL() {
 
 const baseURL = "http://localhost:8080";
 const cid = extractCidFromURL();
+let currentCart = {};
 console.log(cid);
 
 async function getCartDetail(cartId) {
@@ -84,8 +85,6 @@ async function renderCartDetail(cartId) {
     }
 };
 
-
-
 async function renderCartDetailTabla(cartId) {
     let totalCompra = 0; // Variable para almacenar el total de la compra
     try {
@@ -97,6 +96,8 @@ async function renderCartDetailTabla(cartId) {
 
         // Si la respuesta es exitosa y contiene la información esperada
         if (response.success && response.cartById && response.cartById.products) {
+            currentCart.products = response.cartById.products;
+            currentCart.id = cartId;
             for (const producto of response.cartById.products) {
                 const getProduct = await getProductDetail(producto.productoId);
                 const productDetail = getProduct.productById;
@@ -128,6 +129,7 @@ async function renderCartDetailTabla(cartId) {
                     // Columna de Total
                     const totalProducto = producto.quantity * productDetail.price; // Calculamos el total del producto
                     totalCompra += totalProducto; // Sumamos al total de la compra
+                    currentCart.totalCompra = totalCompra
                     const totalCell = document.createElement('td');
                     totalCell.textContent = totalProducto;
                     row.appendChild(totalCell);
@@ -205,6 +207,84 @@ async function handleDeleteFromCartClick(event) {
         icon: 'warning',
         confirmButtonText: 'OK'
     });
+}
+
+async function handleReserveCart() {
+    //event.preventDefault();
+    console.log('handleReserveCart')
+
+    // Obtener información del usuario del Local Storage
+    const userData = JSON.parse(localStorage.getItem('APIuser'));
+    let currentCartId;
+
+    if (userData === null) {
+        // Mostrar SweetAlert indicando que se debe iniciar sesión
+        Swal.fire({
+            title: 'Iniciar Sesión',
+            text: 'Debes iniciar sesión para reservar el carrito.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+        return;
+    } else {
+        currentCartId = currentCart.id
+    }
+
+    try {
+        const today = new Date();
+        const response = await fetch('/api/orders/confirmOrder', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: userData._id,
+                cart: currentCartId,
+                payment: "reservation",
+                date: today,
+                products: currentCart.products, 
+                total: currentCart.totalCompra
+            })
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            const orderId = responseData._id; 
+
+            // Enviar correo electrónico de confirmación
+            const sendConfirmationMail = await fetch('/api/messages', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userEmail: userData.email,
+                    userName: userData.first_name,
+                    payment: "reservation",
+                    date: today,
+                    orderId: orderId, 
+                    products: currentCart.products, 
+                    total: responseData.total 
+                })
+            });
+
+            if (sendConfirmationMail.ok) {
+                //  la reserva se realizó con éxito
+                Swal.fire({
+                    title: 'Reserva Exitosa',
+                    text: 'La reserva se realizó con éxito. Se ha enviado un correo electrónico de confirmación.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                console.error('Error al enviar correo electrónico de confirmación:', sendConfirmationMail.status, sendConfirmationMail.statusText);
+            }
+        } else {
+            console.error('Error al realizar la acción en el carrito:', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud fetch:', error);
+    }
 }
 
 async function handleCartAction(productId, quantity) {

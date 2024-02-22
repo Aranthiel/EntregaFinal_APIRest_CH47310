@@ -43,5 +43,7 @@ export default{
     express_secret : process.env.SESSION_SECRET,
     ghithub_client_id: process.env.GITHUB_CLIENT_ID,
     github_client_secret: process.env.GITHUB_CLIENT_SECRET,
-    github_callback_url: process.env.GITHUB_CALLBACK_URL
+    github_callback_url: process.env.GITHUB_CALLBACK_URL,
+    gmail_user:process.env.GMAIL_USER,
+    gmail_password:process.env.GMAIL_PASSWORD
 }
